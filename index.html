@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Bauchgefühl</title>
+  <meta name="description" content="FODMAP-Datenbank: Was ist verträglich, was nur in kleinen Mengen, was besser meiden?">
+  <meta name="theme-color" content="#0f766e" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b1513" media="(prefers-color-scheme: dark)">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Suche -->
+    <section class="view" id="view-search" data-view="search">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <h1>Bauchgefühl</h1>
+          <span class="brand-sub" id="count-total"></span>
+        </div>
+        <div class="search">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input id="q" type="search" inputmode="search" autocomplete="off" spellcheck="false"
+                 placeholder="Lebensmittel suchen, z.B. Rüebli, Chips …" aria-label="Lebensmittel suchen">
+          <button class="search-clear" id="q-clear" type="button" aria-label="Suche leeren" hidden>
+            <svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
+        </div>
+        <div class="seg" id="status-seg" role="tablist" aria-label="Ampel-Filter"></div>
+        <div class="chips-row">
+          <button class="chip chip-filter" id="btn-filter" type="button">
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+            Filter<span class="chip-badge" id="filter-badge" hidden></span>
+          </button>
+          <div class="chips" id="cat-chips"></div>
+        </div>
+      </header>
+      <main class="content" id="search-content"></main>
+    </section>
+
+    <!-- Meine -->
+    <section class="view" id="view-mine" data-view="mine" hidden>
+      <header class="topbar topbar-simple"><h1>Meine Liste</h1></header>
+      <main class="content" id="mine-content"></main>
+    </section>
+
+    <!-- Zutaten-Check -->
+    <section class="view" id="view-check" data-view="check" hidden>
+      <header class="topbar topbar-simple"><h1>Zutaten-Check</h1></header>
+      <main class="content">
+        <div class="card">
+          <p class="muted">Füge die Zutatenliste eines Produkts ein. Die App markiert Zutaten, die FODMAPs enthalten.</p>
+          <textarea id="ing-input" rows="6" placeholder="Zutaten: Kartoffeln, Sonnenblumenöl, Gewürze (Paprika, Zwiebelpulver), Salz …"></textarea>
+          <div class="row gap">
+            <button class="btn btn-primary" id="ing-check" type="button">Prüfen</button>
+            <button class="btn" id="ing-paste" type="button">Einfügen</button>
+            <button class="btn btn-ghost" id="ing-example" type="button">Beispiel</button>
+          </div>
+          <p class="hint">Tipp: Zutatenliste mit Google Lens fotografieren, «Text kopieren» und hier einfügen.</p>
+        </div>
+        <div id="ing-result"></div>
+      </main>
+    </section>
+
+    <!-- Info -->
+    <section class="view" id="view-info" data-view="info" hidden>
+      <header class="topbar topbar-simple"><h1>Info</h1></header>
+      <main class="content" id="info-content"></main>
+    </section>
+
+    <nav class="tabbar" aria-label="Hauptnavigation">
+      <a href="#/suche" data-tab="search">
+        <svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <span>Suche</span>
+      </a>
+      <a href="#/meine" data-tab="mine">
+        <svg class="i" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+        <span>Meine</span>
+      </a>
+      <a href="#/check" data-tab="check">
+        <svg class="i" viewBox="0 0 24 24"><path d="M9 4h6M8 4h8a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="m9 13 2 2 4-4"/></svg>
+        <span>Zutaten</span>
+      </a>
+      <a href="#/info" data-tab="info">
+        <svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
+        <span>Info</span>
+      </a>
+    </nav>
+  </div>
+
+  <!-- Bottom-Sheet (Details, Filter, Formular) -->
+  <div class="sheet-backdrop" id="sheet-backdrop" hidden></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" hidden>
+    <div class="sheet-grip" aria-hidden="true"></div>
+    <button class="sheet-close" id="sheet-close" type="button" aria-label="Schliessen">
+      <svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <div class="sheet-body" id="sheet-body"></div>
+  </div>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script src="js/data-core.js"></script>
+  <script src="data/01-gemuese-kraeuter.js"></script>
+  <script src="data/02-obst.js"></script>
+  <script src="data/03-getreide-brot.js"></script>
+  <script src="data/04-milch.js"></script>
+  <script src="data/05-fleisch-vegi-nuesse.js"></script>
+  <script src="data/06-snacks-suesses.js"></script>
+  <script src="data/07-saucen-getraenke.js"></script>
+  <script src="data/08-fertig-schweiz.js"></script>
+  <script src="js/ingredients.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
