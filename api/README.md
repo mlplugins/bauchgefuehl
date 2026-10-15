@@ -57,17 +57,40 @@ In FileZilla: Menü «Server» → «Anzeige versteckter Dateien erzwingen».
 
 ### 5. Ausprobieren
 
-`https://bauchgefuehl.mlplugins.com` öffnen → «Meine» → «Anmelden» → E-Mail-Adresse eingeben.
+`https://bauchgefuehl.mlplugins.com` öffnen → «Profil» → «Anmelden» → E-Mail-Adresse eingeben.
 Der Code kommt per E-Mail.
 
-## E-Mail-Versand
+## E-Mail-Versand (SMTP)
 
-Die Mails gehen über PHP `mail()` des Hostings raus. Als Absender (`from_address` in `config.php`)
-eine Adresse einer Domain nehmen, die bei Hetzner liegt, z.B. `noreply@mlplugins.com`.
-Kommen keine Mails an: Spam-Ordner prüfen und in konsoleH kontrollieren, ob für die Domain SPF eingerichtet ist.
+Die Anmeldecodes werden über ein normales Postfach verschickt, wie mit einem Mailprogramm.
 
-Zum Testen ohne Mailversand: `'mode' => 'log'` – die Codes landen dann in `api/data/mail.log`
-(per FTP herunterladen). Danach wieder auf `'php'` stellen.
+1. In konsoleH unter «E-Mail» ein Postfach anlegen (oder ein bestehendes nehmen), z.B. `support@mlplugins.com`.
+2. In `api/config.php` den Block `mail` ausfüllen:
+
+   ```php
+   'mail' => [
+       'mode'         => 'smtp',
+       'from_address' => 'support@mlplugins.com',
+       'from_name'    => 'Bauchgefühl',
+       'host'         => 'mail.your-server.de',
+       'port'         => 587,
+       'secure'       => 'tls',
+       'user'         => 'support@mlplugins.com',
+       'pass'         => 'Passwort des Postfachs',
+   ],
+   ```
+
+   `mail.your-server.de` ist der Mailserver für Postfächer bei Hetzner. Liegt das Postfach
+   bei einem anderen Anbieter, dessen SMTP-Server, Port und Zugangsdaten eintragen
+   (Port 465 dann mit `'secure' => 'ssl'`).
+3. `config.php` per FTP hochladen und in der App eine Anmeldung ausprobieren.
+
+`from_address` sollte dasselbe Postfach sein wie `user` – sonst lehnen viele Mailserver den Versand ab.
+Klappt es nicht, meldet die App «Die E-Mail konnte nicht gesendet werden». Die genaue Ursache
+(z.B. falsches Passwort) steht dann im PHP-Fehlerprotokoll in konsoleH.
+
+Weitere Modi: `'php'` nutzt PHP `mail()` des Hostings, `'log'` schreibt die Codes nur in
+`api/data/mail.log` (zum Testen).
 
 ## Google-Anmeldung (optional)
 

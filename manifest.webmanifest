@@ -18,6 +18,6 @@
   ],
   "shortcuts": [
     { "name": "Zutaten-Check", "url": "./#/check", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
-    { "name": "Meine Liste", "url": "./#/meine", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+    { "name": "Profil", "url": "./#/meine", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
   ]
 }

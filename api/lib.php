@@ -184,10 +184,81 @@ function send_login_mail(string $to, string $code, string $link): void
         'MIME-Version: 1.0',
         "Content-Type: multipart/alternative; boundary=\"$boundary\"",
     ];
-    $ok = mail($to, mime_header("Dein Anmeldecode für Bauchgefühl: $code"), $body, implode("\r\n", $headers), '-f' . $from);
+    $subject = mime_header("Dein Anmeldecode für Bauchgefühl: $code");
+
+    if (($m['mode'] ?? 'php') === 'smtp') {
+        try {
+            smtp_send($m, $from, $to, $subject, $headers, $body);
+        } catch (RuntimeException $e) {
+            error_log('Bauchgefühl: ' . $e->getMessage());
+            throw new HttpError(502, 'Die E-Mail konnte nicht gesendet werden. Bitte später noch einmal probieren.');
+        }
+        return;
+    }
+    $ok = mail($to, $subject, $body, implode("\r\n", $headers), '-f' . $from);
     if (!$ok) {
-        error_log('Bauchgefühl: Mailversand fehlgeschlagen');
+        error_log('Bauchgefühl: Mailversand mit mail() fehlgeschlagen');
         throw new HttpError(502, 'Die E-Mail konnte nicht gesendet werden. Bitte später noch einmal probieren.');
+    }
+}
+
+// Minimaler SMTP-Versand (STARTTLS oder SSL, AUTH LOGIN) ohne zusätzliche Bibliothek
+function smtp_send(array $m, string $from, string $to, string $subject, array $headers, string $body): void
+{
+    $host = (string) ($m['host'] ?? '');
+    $port = (int) ($m['port'] ?? 587);
+    $secure = $m['secure'] ?? 'tls'; // 'tls' = STARTTLS (Port 587), 'ssl' = Port 465, 'none' nur zum Testen
+    if ($host === '') throw new RuntimeException('SMTP: host fehlt in config.php');
+
+    $ctx = stream_context_create(['ssl' => ['peer_name' => $host, 'verify_peer' => true, 'verify_peer_name' => true]]);
+    $fp = @stream_socket_client(($secure === 'ssl' ? 'ssl://' : 'tcp://') . "$host:$port", $errno, $errstr, 15, STREAM_CLIENT_CONNECT, $ctx);
+    if (!$fp) throw new RuntimeException("SMTP: keine Verbindung zu $host:$port ($errstr)");
+    stream_set_timeout($fp, 20);
+
+    $expect = function (?string $command, array $codes, bool $secret = false) use ($fp): string {
+        if ($command !== null) fwrite($fp, $command . "\r\n");
+        $reply = '';
+        while (($line = fgets($fp, 1024)) !== false) {
+            $reply .= $line;
+            if (strlen($line) < 4 || $line[3] !== '-') break; // letzte Zeile einer Antwort
+        }
+        if (!in_array((int) substr($reply, 0, 3), $codes, true)) {
+            $shown = $secret ? '(Anmeldung mit Benutzer/Passwort)' : ($command === null ? '(Begrüssung)' : (strlen($command) < 100 ? $command : '(Nachricht)'));
+            throw new RuntimeException('SMTP: ' . $shown . ' → ' . trim($reply));
+        }
+        return $reply;
+    };
+
+    try {
+        $domain = substr(strrchr($from, '@') ?: '@localhost', 1);
+        $expect(null, [220]);
+        $expect("EHLO $domain", [250]);
+        if ($secure === 'tls') {
+            $expect('STARTTLS', [220]);
+            if (!stream_socket_enable_crypto($fp, true, STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT | STREAM_CRYPTO_METHOD_TLSv1_3_CLIENT)) {
+                throw new RuntimeException('SMTP: TLS-Verschlüsselung fehlgeschlagen');
+            }
+            $expect("EHLO $domain", [250]);
+        }
+        if (!empty($m['user'])) {
+            $expect('AUTH LOGIN', [334]);
+            $expect(base64_encode((string) $m['user']), [334], true);
+            $expect(base64_encode((string) ($m['pass'] ?? '')), [235], true);
+        }
+        $expect("MAIL FROM:<$from>", [250]);
+        $expect("RCPT TO:<$to>", [250, 251]);
+        $expect('DATA', [354]);
+        $message = implode("\r\n", array_merge([
+            'Date: ' . date('r'),
+            "To: <$to>",
+            "Subject: $subject",
+            'Message-ID: <' . bin2hex(random_bytes(12)) . "@$domain>",
+        ], $headers)) . "\r\n\r\n" . $body;
+        $message = preg_replace('/^\./m', '..', str_replace(["\r\n", "\n"], ["\n", "\r\n"], $message));
+        $expect($message . "\r\n.", [250]);
+        try { $expect('QUIT', [221]); } catch (RuntimeException $e) { /* Mail ist bereits angenommen */ }
+    } finally {
+        fclose($fp);
     }
 }
 

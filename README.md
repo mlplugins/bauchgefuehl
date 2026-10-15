@@ -38,9 +38,9 @@ Name | Ampel | Synonyme | Verträgliche Portion | Kritisch ab | Gruppen | Hinwei
 
 ## Persönliche Daten und Konto
 
-Bewertungen, Favoriten, Notizen und eigene Einträge liegen im Browser des Geräts. Unter «Meine → Sicherung» lassen sie sich als JSON-Datei exportieren und wieder importieren.
+Bewertungen, Favoriten, Notizen und eigene Einträge liegen im Browser des Geräts. Unter «Profil → Sicherung» lassen sie sich als JSON-Datei exportieren und wieder importieren.
 
-Wer sich unter «Meine» anmeldet (E-Mail-Code oder Google), dessen Daten werden über den eigenen Server abgeglichen – so sind Merkliste und Bewertungen auf Handy und Computer gleich. Der Server liegt im Ordner [`api/`](api/README.md) (PHP + MariaDB/MySQL) und läuft zusammen mit der App per FTP auf dem Hetzner-Webhosting unter `https://bauchgefuehl.mlplugins.com`. Die Einrichtung steht in [api/README.md](api/README.md). Adresse und Google-Client-ID der App stehen in `js/config.js`.
+Wer sich unter «Profil» anmeldet (E-Mail-Code oder Google), dessen Daten werden über den eigenen Server abgeglichen – so sind Merkliste und Bewertungen auf Handy und Computer gleich. Der Server liegt im Ordner [`api/`](api/README.md) (PHP + MariaDB/MySQL) und läuft zusammen mit der App per FTP auf dem Hetzner-Webhosting unter `https://bauchgefuehl.mlplugins.com`. Die Einrichtung steht in [api/README.md](api/README.md). Adresse und Google-Client-ID der App stehen in `js/config.js`.
 
 Lokal testen mit Konto: `php -S localhost:8787 -t .` (mit einer lokalen `api/config.php`, siehe api/README.md).
 

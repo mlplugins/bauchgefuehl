@@ -185,6 +185,72 @@ test('Konto löschen entfernt Konto, Sitzungen und Daten', async () => {
   } finally { t.close(); }
 });
 
+// Kleiner SMTP-Server zum Testen (ohne Verschlüsselung): merkt sich Anmeldung und Nachricht
+function fakeSmtp({ password }) {
+  const seen = { auth: [], from: null, to: null, data: '' };
+  const server = net.createServer((sock) => {
+    let mode = 'cmd', buf = '';
+    sock.write('220 test.local ESMTP\r\n');
+    sock.on('data', (chunk) => {
+      buf += chunk.toString('utf8');
+      let i;
+      while ((i = buf.indexOf('\r\n')) >= 0) {
+        const line = buf.slice(0, i); buf = buf.slice(i + 2);
+        if (mode === 'data') {
+          if (line === '.') { mode = 'cmd'; sock.write('250 OK queued\r\n'); } else seen.data += line + '\n';
+          continue;
+        }
+        if (mode === 'user') { seen.auth.push(Buffer.from(line, 'base64').toString()); mode = 'pass'; sock.write('334 UGFzc3dvcmQ6\r\n'); continue; }
+        if (mode === 'pass') {
+          const pass = Buffer.from(line, 'base64').toString();
+          seen.auth.push(pass); mode = 'cmd';
+          sock.write(pass === password ? '235 Authenticated\r\n' : '535 Authentication failed\r\n');
+          continue;
+        }
+        if (/^EHLO/i.test(line)) sock.write('250-test.local\r\n250 AUTH LOGIN\r\n');
+        else if (line === 'AUTH LOGIN') { mode = 'user'; sock.write('334 VXNlcm5hbWU6\r\n'); }
+        else if (/^MAIL FROM:/.test(line)) { seen.from = line; sock.write('250 OK\r\n'); }
+        else if (/^RCPT TO:/.test(line)) { seen.to = line; sock.write('250 OK\r\n'); }
+        else if (line === 'DATA') { mode = 'data'; sock.write('354 Go\r\n'); }
+        else if (line === 'QUIT') { sock.end('221 Bye\r\n'); }
+        else sock.write('500 Unbekannt\r\n');
+      }
+    });
+  });
+  return new Promise((resolve) => server.listen(0, '127.0.0.1', () => resolve({ port: server.address().port, seen, close: () => server.close() })));
+}
+
+test('SMTP: Anmeldecode wird über das Postfach verschickt', async () => {
+  const smtp = await fakeSmtp({ password: 'geheim' });
+  const t = await setup(`'mail' => ['mode' => 'smtp', 'host' => '127.0.0.1', 'port' => ${smtp.port}, 'secure' => 'none',
+    'user' => 'support@mlplugins.com', 'pass' => 'geheim', 'from_address' => 'support@mlplugins.com', 'from_name' => 'Bauchgefühl']`);
+  try {
+    const r = await t.call('POST', '/auth/email/start', { email: 'kunde@example.com' });
+    assert.strictEqual(r.status, 200);
+    assert.deepStrictEqual(smtp.seen.auth, ['support@mlplugins.com', 'geheim']);
+    assert.strictEqual(smtp.seen.from, 'MAIL FROM:<support@mlplugins.com>');
+    assert.strictEqual(smtp.seen.to, 'RCPT TO:<kunde@example.com>');
+    assert.match(smtp.seen.data, /^Subject: =\?UTF-8\?B\?/m);
+    assert.match(smtp.seen.data, /^From: =\?UTF-8\?B\?.+\?= <support@mlplugins\.com>/m);
+    // Code steht base64-codiert im Text-Teil
+    const parts = smtp.seen.data.split(/^--bg-[0-9a-f]+/m);
+    const text = Buffer.from(parts[1].split('\n\n').slice(1).join('').replace(/\s/g, ''), 'base64').toString();
+    const code = /lautet: (\d{6})/.exec(text)[1];
+    assert.strictEqual((await t.call('POST', '/auth/email/verify', { email: 'kunde@example.com', code })).status, 200);
+  } finally { t.close(); smtp.close(); }
+});
+
+test('SMTP: falsches Passwort gibt eine verständliche Meldung', async () => {
+  const smtp = await fakeSmtp({ password: 'richtig' });
+  const t = await setup(`'mail' => ['mode' => 'smtp', 'host' => '127.0.0.1', 'port' => ${smtp.port}, 'secure' => 'none',
+    'user' => 'support@mlplugins.com', 'pass' => 'falsch', 'from_address' => 'support@mlplugins.com']`);
+  try {
+    const r = await t.call('POST', '/auth/email/start', { email: 'kunde@example.com' });
+    assert.strictEqual(r.status, 502);
+    assert.match(r.body.error, /E-Mail konnte nicht gesendet werden/);
+  } finally { t.close(); smtp.close(); }
+});
+
 test('CORS nur für erlaubte Adressen, Preflight mit X-Auth-Token', async () => {
   const t = await setup();
   try {

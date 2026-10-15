@@ -28,10 +28,19 @@ return [
     // OAuth-Client-ID aus der Google Cloud Console (leer = Google-Anmeldung aus)
     'google_client_id' => '',
 
-    // E-Mail-Versand über PHP mail() des Hostings
+    // E-Mail-Versand für die Anmeldecodes
     'mail' => [
-        'mode'         => 'php',        // 'php' = senden, 'log' = nur in data/mail.log schreiben (Test)
-        'from_address' => 'noreply@mlplugins.com',
+        'mode'         => 'smtp',       // 'smtp' = über ein Postfach senden (empfohlen)
+                                        // 'php'  = PHP mail() des Hostings
+                                        // 'log'  = nur in data/mail.log schreiben (Test)
+        'from_address' => 'support@mlplugins.com', // Absender – am besten dasselbe Postfach wie 'user'
         'from_name'    => 'Bauchgefühl',
+
+        // SMTP-Zugang des Postfachs (bei Hetzner-Postfächern: mail.your-server.de)
+        'host'   => 'mail.your-server.de',
+        'port'   => 587,                // 587 mit 'tls' oder 465 mit 'ssl'
+        'secure' => 'tls',
+        'user'   => 'support@mlplugins.com',
+        'pass'   => '',                 // Passwort des Postfachs
     ],
 ];

@@ -548,7 +548,7 @@
     openSheet(html, mount, refreshCurrent);
   }
 
-  // ---------- Meine Liste ----------
+  // ---------- Profil ----------
   let mineTab = 'favs';
   function renderMine() {
     const el = $('#mine-content');
@@ -880,7 +880,7 @@
         <ol class="steps">
           <li><b>Reduktion (2–6 Wochen):</b> Nur Lebensmittel mit grüner Ampel bzw. in den angegebenen Portionen.</li>
           <li><b>Wiedereinführung:</b> Eine FODMAP-Gruppe nach der anderen gezielt testen und Reaktionen notieren.</li>
-          <li><b>Langzeit:</b> Nur noch die Gruppen meiden, die du wirklich nicht verträgst. Unter «Meine» kannst du sie festhalten.</li>
+          <li><b>Langzeit:</b> Nur noch die Gruppen meiden, die du wirklich nicht verträgst. Unter «Profil» kannst du sie festhalten.</li>
         </ol>
         <p class="hint">Portionen addieren sich: Mehrere «gelegentlich»-Lebensmittel in einer Mahlzeit können zusammen zu viel sein.</p>
       </div>
@@ -902,7 +902,7 @@
       </div>
       <div class="card">
         <h2>Konto & Datenschutz</h2>
-        <p>Ohne Konto bleiben deine Daten nur auf diesem Gerät. Mit einem Konto (unter «Meine») werden sie mit deinen anderen Geräten abgeglichen. Das Konto kannst du jederzeit löschen.</p>
+        <p>Ohne Konto bleiben deine Daten nur auf diesem Gerät. Mit einem Konto (unter «Profil») werden sie mit deinen anderen Geräten abgeglichen. Das Konto kannst du jederzeit löschen.</p>
         <p><a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a></p>
       </div>
       <div class="card">
