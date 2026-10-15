@@ -23,6 +23,10 @@ Am einfachsten geht das mit Netlify Drop:
 2. Den ganzen Ordner `FODMAPS` ins Fenster ziehen.
 3. Die angezeigte Adresse (`https://….netlify.app`) auf dem Handy in Chrome öffnen und installieren.
 
+## Android-App (Google Play)
+
+Die App gibt es zusätzlich als Android-App im Play Store (Paket `com.mlplugins.bauchgefuehl`). Sie ist eine Trusted Web Activity: Sie zeigt die Website ohne Adressleiste an, Updates der Website gelten also sofort auch für die App. Bau und Signatur: [android/README.md](android/README.md). Store-Texte, Grafiken und Anleitung für die Play Console: [store/](store/ANLEITUNG.md). Die Datei `.well-known/assetlinks.json` muss auf dem Server liegen, sonst erscheint in der App eine Adressleiste.
+
 ## Daten bearbeiten
 
 Die Lebensmittel stehen in `data/*.js`, eine Zeile pro Eintrag:

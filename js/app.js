@@ -892,7 +892,7 @@
           <div class="stat"><b style="color:var(--r)">${n.r}</b><span>meiden</span></div>
         </div>
         <p style="margin-top:12px">Die Angaben basieren auf öffentlich verfügbaren Daten zu Labormessungen (v.a. Monash University) und Fachliteratur. ${est} Einträge – meist Markenprodukte und Gerichte – sind aus den typischen Zutaten abgeleitet und mit ⓘ markiert.</p>
-        <p class="muted" style="font-size:13px">Die Werte sind Richtwerte und ersetzen keine Ernährungsberatung. Rezepturen ändern sich – bei Fertigprodukten das Etikett prüfen. Die verbindliche Referenz ist die kostenpflichtige Monash FODMAP App.</p>
+        <p class="muted" style="font-size:13px">Die Werte sind Richtwerte und keine medizinische Beratung. Sie ersetzen weder Arzt noch Ernährungsberatung. Rezepturen ändern sich – bei Fertigprodukten das Etikett prüfen. Die verbindliche Referenz ist die kostenpflichtige Monash FODMAP App.</p>
       </div>
       <div class="card">
         <h2>Darstellung</h2>

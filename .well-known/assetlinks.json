@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.mlplugins.bauchgefuehl",
+      "sha256_cert_fingerprints": [
+        "C6:53:4C:6E:60:2B:BB:65:A3:16:10:8C:84:08:69:76:E8:F0:1E:0E:7B:4D:CB:22:9D:C0:F8:6E:EA:3F:6F:12"
+      ]
+    }
+  }
+]

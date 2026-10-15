@@ -6,3 +6,9 @@ desktop.ini
 api/config.php
 api/data/*
 !api/data/.htaccess
+
+# Android: Schlüssel und Build-Ergebnisse nie ins Repo
+*.keystore
+*.jks
+*.aab
+*.apk

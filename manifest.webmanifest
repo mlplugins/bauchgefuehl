@@ -3,6 +3,7 @@
   "short_name": "Bauchgefühl",
   "description": "Welche Lebensmittel sind FODMAP-verträglich? Durchsuchbare Datenbank mit Ampel, Portionen und Zutaten-Check.",
   "lang": "de-CH",
+  "dir": "ltr",
   "id": "./",
   "start_url": "./#/suche",
   "scope": "./",
@@ -10,14 +11,89 @@
   "orientation": "portrait",
   "background_color": "#f4f6f5",
   "theme_color": "#0f766e",
-  "categories": ["health", "food", "lifestyle"],
+  "categories": [
+    "health",
+    "food",
+    "lifestyle"
+  ],
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/01-suche.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Suche mit Ampel und Kategorien"
+    },
+    {
+      "src": "screenshots/02-regionale-namen.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Regionale Namen wie Rüebli, Möhre oder Karotte"
+    },
+    {
+      "src": "screenshots/03-detail.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Details mit verträglicher Portion"
+    },
+    {
+      "src": "screenshots/04-zutaten-check.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Zutaten-Check für Fertigprodukte"
+    },
+    {
+      "src": "screenshots/05-merkliste.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Merkliste und eigene Bewertungen"
+    }
   ],
   "shortcuts": [
-    { "name": "Zutaten-Check", "url": "./#/check", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
-    { "name": "Profil", "url": "./#/meine", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
-  ]
+    {
+      "name": "Zutaten-Check",
+      "url": "./#/check",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Profil",
+      "url": "./#/meine",
+      "icons": [
+        {
+          "src": "icons/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
 }

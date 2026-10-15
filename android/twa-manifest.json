@@ -1,0 +1,56 @@
+{
+  "packageId": "com.mlplugins.bauchgefuehl",
+  "host": "bauchgefuehl.mlplugins.com",
+  "name": "Bauchgefühl – FODMAP-Datenbank",
+  "launcherName": "Bauchgefühl",
+  "display": "standalone",
+  "orientation": "portrait",
+  "themeColor": "#0F766E",
+  "themeColorDark": "#0B1513",
+  "navigationColor": "#FFFFFF",
+  "navigationColorDark": "#131D1B",
+  "navigationDividerColor": "#E2E8E5",
+  "navigationDividerColorDark": "#22312D",
+  "backgroundColor": "#F4F6F5",
+  "enableNotifications": false,
+  "startUrl": "/#/suche",
+  "iconUrl": "https://bauchgefuehl.mlplugins.com/icons/icon-512.png",
+  "maskableIconUrl": "https://bauchgefuehl.mlplugins.com/icons/maskable-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "C:/Users/LKB-Lappi/Bauchgefuehl-Signatur/upload.keystore",
+    "alias": "upload"
+  },
+  "appVersion": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [
+    {
+      "name": "Zutaten-Check",
+      "shortName": "Zutaten",
+      "url": "https://bauchgefuehl.mlplugins.com/#/check",
+      "chosenIconUrl": "https://bauchgefuehl.mlplugins.com/icons/icon-192.png"
+    },
+    {
+      "name": "Profil",
+      "shortName": "Profil",
+      "url": "https://bauchgefuehl.mlplugins.com/#/meine",
+      "chosenIconUrl": "https://bauchgefuehl.mlplugins.com/icons/icon-192.png"
+    }
+  ],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://bauchgefuehl.mlplugins.com/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://bauchgefuehl.mlplugins.com/",
+  "minSdkVersion": 24,
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "displayOverride": []
+}
