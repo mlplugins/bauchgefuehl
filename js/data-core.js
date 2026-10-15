@@ -29,6 +29,8 @@
     { id: 'alkohol', name: 'Alkohol', icon: '🍷' },
     { id: 'fertig', name: 'Fertiggerichte & Fast Food', icon: '🍕' },
     { id: 'schweiz', name: 'Schweizer Klassiker', icon: '🏔️' },
+    { id: 'deutschland', name: 'Deutsche Klassiker', icon: '🥨' },
+    { id: 'oesterreich', name: 'Österreichische Klassiker', icon: '🍰' },
   ];
 
   const GROUPS = {

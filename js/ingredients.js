@@ -44,7 +44,7 @@
 
     // --- Obst
     [/birnendicksaft|apfeldicksaft|apfelsaft|birnensaft|apfel|birne|mango|wassermelone|feige|dattel|rosine|sultanine|korinthe|trockenfr|dorrobst/, 'r', 'Obst mit viel Fruktose oder Sorbit', 'X S'],
-    [/pflaume|zwetschg|aprikose|pfirsich|nektarine|brombeer|kirsch|litschi/, 'r', 'Obst mit viel Sorbit', 'S'],
+    [/pflaume|zwetschg|zwetschk|powidl|aprikose|marille|pfirsich|nektarine|brombeer|kirsch|litschi/, 'r', 'Obst mit viel Sorbit', 'S'],
     [/fruchtsaftkonzentrat|fruchtsaft|saftkonzentrat|fruchtpuree|fruchtzubereitung|fruchtmark/, 'y', 'Fruchtsaft unbekannter Sorte – je nach Frucht problematisch', 'X'],
 
     // --- Polyole
@@ -57,7 +57,7 @@
     // --- Laktose
     [/laktose|lactose|milchzucker/, 'r', 'Laktose', 'L'],
     [/milchpulver|molke|buttermilch|kondensmilch|milchserum|milcherzeugnis|milchbestandteil/, 'y', 'Milchbestandteil mit Laktose – Menge entscheidend', 'L'],
-    [/joghurt|jogurt|quark|frischkase|ricotta|mascarpone|rahm|sahne|milch/, 'y', 'Milchprodukt mit Laktose', 'L'],
+    [/joghurt|jogurt|quark|frischkase|ricotta|mascarpone|rahm|sahne|obers|topfen|schmand|milch/, 'y', 'Milchprodukt mit Laktose', 'L'],
     [/butter|kase|ghee/, 'g', 'Praktisch laktosefrei'],
 
     // --- Hülsenfrüchte & Nüsse

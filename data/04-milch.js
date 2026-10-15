@@ -9,9 +9,9 @@ Fruchtjoghurt | r | Erdbeerjoghurt, Joghurt mit Früchten | Meiden | | L X |
 Griechischer Joghurt | y | Greek Yogurt | 2 EL (ca. 40 g) | ab ca. 100 g | L |
 Laktosefreier Joghurt | g | Aha! Joghurt, Free From Joghurt | 1 Becher | | | Fruchtsorten: auf Apfel, Birne, Mango oder Zuckeraustauschstoffe achten.
 Skyr | y~ | | ca. 50 g | ab ca. 150 g | L |
-Quark | y | Magerquark, Speisequark, Rahmquark | 2 EL | ab ca. 100 g | L |
-Laktosefreier Quark | g | | 1 Becher | | |
-Hüttenkäse | y | Cottage Cheese, Hüttechäs | 2 EL (ca. 40 g) | ab ca. 100 g | L |
+Quark | y | Magerquark, Speisequark, Rahmquark, Topfen, Magertopfen, Speisetopfen | 2 EL | ab ca. 100 g | L |
+Laktosefreier Quark | g | laktosefreier Topfen | 1 Becher | | |
+Hüttenkäse | y | Cottage Cheese, Hüttechäs, Körniger Frischkäse | 2 EL (ca. 40 g) | ab ca. 100 g | L |
 Frischkäse | y | Philadelphia, Doppelrahmfrischkäse | 2 EL (ca. 40 g) | ab ca. 80 g | L | Kräutervarianten enthalten oft Knoblauch.
 Frischkäse mit Kräutern | r~ | Cantadou, Boursin, Kräuterfrischkäse | Meiden | | F L | Meist mit Knoblauch und/oder Zwiebel.
 Laktosefreier Frischkäse | g | | 2–3 EL | | |
@@ -32,26 +32,26 @@ Tilsiter | g | | Keine Grenze bekannt | | |
 Tête de Moine | g | Mönchskopf | Keine Grenze bekannt | | |
 Vacherin Fribourgeois | g~ | Vacherin | Keine Grenze bekannt | | |
 Raclettekäse | g | Raclette | Keine Grenze bekannt | | |
-Bergkäse | g | Alpkäse, Hobelkäse | Keine Grenze bekannt | | |
+Bergkäse | g | Alpkäse, Hobelkäse, Allgäuer Bergkäse, Vorarlberger Bergkäse | Keine Grenze bekannt | | |
 Parmesan | g | Parmigiano, Grana Padano, Pecorino | Keine Grenze bekannt | | |
 Cheddar | g | | Keine Grenze bekannt | | |
-Gouda | g | Edamer, Maasdamer | Keine Grenze bekannt | | |
+Gouda | g | Edamer, Maasdamer, Butterkäse, Leerdammer | Keine Grenze bekannt | | |
 Schmelzkäse | y~ | Scheibenkäse, Streichkäse, Toastkäse, Gerber | 1–2 Scheiben | | L | Enthält oft Milchpulver.
-Butter | g | Vorzugsbutter, Kochbutter, Süssrahmbutter | Keine Grenze bekannt | | |
-Bratbutter | g | Ghee, Butterreinfett, Butterschmalz | Keine Grenze bekannt | | |
+Butter | g | Vorzugsbutter, Kochbutter, Süssrahmbutter, Teebutter, Markenbutter | Keine Grenze bekannt | | |
+Bratbutter | g | Ghee, Butterreinfett, Butterschmalz, Rindschmalz | Keine Grenze bekannt | | |
 Margarine | g | Pflanzenmargarine | Keine Grenze bekannt | | |
-Vollrahm | g | Rahm, Sahne, Schlagrahm, Doppelrahm | ca. 40 ml (3 EL) | ab ca. 100 ml | L |
-Halbrahm | y~ | Kochrahm, Saucenhalbrahm | 3 EL | ab ca. 100 ml | L | Enthält mehr Laktose als Vollrahm.
-Kaffeerahm | g | Kafirahm, Portionenrahm, Kaffeesahne | 1–2 Portionen | | L |
+Vollrahm | g | Rahm, Sahne, Schlagrahm, Doppelrahm, Schlagsahne, Schlagobers, Obers, Schlag | ca. 40 ml (3 EL) | ab ca. 100 ml | L |
+Halbrahm | y~ | Kochrahm, Saucenhalbrahm, Kochsahne, Kochobers | 3 EL | ab ca. 100 ml | L | Enthält mehr Laktose als Vollrahm.
+Kaffeerahm | g | Kafirahm, Portionenrahm, Kaffeesahne, Kaffeeobers | 1–2 Portionen | | L |
 Sauerrahm | y | Saure Sahne, Schmand | 2 EL | | L |
 Crème fraîche | y | Crème Fraîche | 2 EL | | L |
-Laktosefreier Rahm | g | Aha! Rahm | Keine Grenze bekannt | | |
+Laktosefreier Rahm | g | Aha! Rahm, laktosefreie Sahne, laktosefreies Obers | Keine Grenze bekannt | | |
 Kondensmilch | r | gezuckerte Kondensmilch | Meiden | | L |
 Milchpulver | r | Vollmilchpulver, Magermilchpulver | Meiden | | L |
-Glace | r | Eiscreme, Rahmglace, Vanilleglace, Speiseeis | 1 kleine Kugel | ab 2 Kugeln | L | Laktosefreie Glace oder Sorbet sind Alternativen.
-Laktosefreie Glace | y~ | Aha! Glace | 2 Kugeln | | | Auf Zuckeralkohole und Fruchtsorten achten.
+Glace | r | Eiscreme, Rahmglace, Vanilleglace, Speiseeis, Eis, Milcheis, Gefrorenes | 1 kleine Kugel | ab 2 Kugeln | L | Laktosefreie Glace oder Sorbet sind Alternativen.
+Laktosefreie Glace | y~ | Aha! Glace, laktosefreies Eis | 2 Kugeln | | | Auf Zuckeralkohole und Fruchtsorten achten.
 Sorbet | g~ | Zitronensorbet, Himbeersorbet | 2 Kugeln | | | Sorten mit Mango, Apfel, Birne oder Pfirsich meiden.
-Milchreis | r | | Meiden | | L | Mit laktosefreier Milch selbst gekocht verträglich.
+Milchreis | r | Reisbrei | Meiden | | L | Mit laktosefreier Milch selbst gekocht verträglich.
 Pudding | r | Caramelköpfli, Vanillecreme, Flan | Meiden | | L | Mit laktosefreier Milch zubereitet verträglich.
 Laktosefreier Pudding | g~ | | 1 Becher | | |
 Mandeldrink | g | Mandelmilch, Mandeldrink ungesüsst | 1 Glas (250 ml) | | |

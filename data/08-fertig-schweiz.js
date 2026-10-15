@@ -12,10 +12,11 @@ Gebratene Nudeln | y~ | Mie Goreng, Chow Mein | kleine Portion | | F |
 Lasagne | r~ | | Meiden | | F L |
 Spaghetti Bolognese | r~ | Spaghetti Bolo | Meiden | | F |
 Risotto | r~ | Risotto Restaurant | Meiden | | F | Zwiebeln und Bouillon – selbst gemacht mit Knoblauchöl und FODMAP-armer Bouillon verträglich.
-Fertigsuppe | r~ | Tütensuppe, Knorr Suppe, Instant-Suppe | Meiden | | F |
+Fertigsuppe | r~ | Tütensuppe, Knorr Suppe, Instant-Suppe, Packerlsuppe | Meiden | | F |
 Tomatensuppe | r~ | | Meiden | | F |
-Kartoffelsalat | y~ | | | | F | Meist mit Zwiebeln. Mit Essig-Öl und Schnittlauch verträglich.
-Sandwich | y~ | Sandwich Weizen, Club Sandwich | ½ Stück | | F |
+Kartoffelsalat | y~ | Erdäpfelsalat, Schwäbischer Kartoffelsalat | | | F | Meist mit Zwiebeln. Mit Essig-Öl und Schnittlauch verträglich.
+Kartoffelstock | y~ | Kartoffelpüree, Kartoffelbrei, Stampfkartoffeln, Erdäpfelpüree, Püree | 1 Portion | | L | Mit Milch und Butter – mit laktosefreier Milch gut verträglich.
+Sandwich | y~ | Sandwich Weizen, Club Sandwich, belegtes Brötchen, Wurstsemmel | ½ Stück | | F |
 Wrap | y~ | Tortilla-Wrap | ½ Stück | | F |
 Quiche | y~ | Quiche Lorraine, Speckkuchen | 1 kleines Stück | | F L |
 Hot Dog | y~ | | 1 Stück | | F |
@@ -34,7 +35,7 @@ Käsefondue | y | Fondue moitié-moitié, Fondue | 1 Portion | | F | Käse ist v
 Fondue chinoise | y~ | Fondue Chinoise | | | F | Fleisch ist ok – Fertigsaucen (Curry, Knoblauch, Cocktail) und Bouillon sind problematisch.
 Älplermagronen | r~ | Älplermakkaronen | Meiden | | F X S | Röstzwiebeln, Pasta und Apfelmus.
 Zürcher Geschnetzeltes | r~ | Züri Gschnätzlets | Meiden | | F M L | Zwiebeln, Champignons und Rahm.
-Birchermüesli | r | Bircher | Meiden | | X S L | Äpfel und Joghurt. Mit Banane, Beeren, Haferflocken und laktosefreiem Joghurt verträglich.
+Birchermüesli | r | Bircher, Birchermüsli, Bircher Müsli | Meiden | | X S L | Äpfel und Joghurt. Mit Banane, Beeren, Haferflocken und laktosefreiem Joghurt verträglich.
 Bündner Gerstensuppe | r | Gerstensuppe | Meiden | | F |
 Chäschüechli | y~ | Käseküchlein | 1 Stück | | F L |
 Chäswähe | y~ | Käsewähe | 1 Stück | | F L |
@@ -56,5 +57,5 @@ Saucisson vaudois | y~ | Saucisson | einige Scheiben | | F |
 Papet vaudois | r | | Meiden | | F | Basiert auf Lauch.
 Capuns | y~ | | | | F L |
 Polenta mit Käse | g~ | Bramata | 1 Portion | | |
-Ofenküchlein | y~ | Windbeutel, Profiteroles | 1–2 Stück | | F L |
+Ofenküchlein | y~ | Windbeutel, Profiteroles, Brandteigkrapfen | 1–2 Stück | | F L |
 `);
