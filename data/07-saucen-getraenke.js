@@ -108,6 +108,7 @@ Süsswein | r | Dessertwein, Portwein, Sauternes, Sherry süss | Meiden | | X |
 Gin | g | Gin Tonic | 1 Glas (30 ml) | | |
 Wodka | g | Vodka | 1 Glas (30 ml) | | |
 Whisky | g | Whiskey, Bourbon | 1 Glas (30 ml) | | |
+Cognac | g~ | Brandy, Weinbrand, Armagnac | 1 Glas (30 ml) | | | Destillat aus Wein – enthält praktisch keine FODMAPs.
 Tequila | g~ | Mezcal | 1 Glas (30 ml) | | |
 Rum | y | | 1 Glas (30 ml) | | X |
 Obstbrand | g~ | Kirsch, Kirschwasser, Williams, Träsch, Pflümli, Grappa | 1 Gläschen (2 cl) | | | Destillate enthalten praktisch keine FODMAPs.
