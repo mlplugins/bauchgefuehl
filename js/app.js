@@ -187,17 +187,31 @@
     return (CAT[it.cat] ? CAT[it.cat].icon + ' ' : '') + (parts.join(' · ') || (CAT[it.cat] ? CAT[it.cat].name : ''));
   }
 
+  const STAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>';
+
+  // Merken direkt aus der Liste, ohne die Detailansicht zu öffnen
+  function toggleFavFromList(btn) {
+    const id = btn.dataset.fav, it = BY_ID[id];
+    if (!it) return;
+    const on = !store.favs[id];
+    if (on) store.favs[id] = true; else delete store.favs[id];
+    save();
+    btn.setAttribute('aria-pressed', String(on));
+    btn.setAttribute('aria-label', `${it.name} ${on ? 'aus Merkliste entfernen' : 'merken'}`);
+    toast(on ? `«${it.name}» gemerkt` : `«${it.name}» aus Merkliste entfernt`);
+  }
+
   function itemHTML(it, via) {
     const st = eff(it);
     const mine = store.ratings[it.id];
     const hint = !mine && groupHint(it);
     const marks = [];
-    if (store.favs[it.id]) marks.push('<svg class="fav-star" viewBox="0 0 24 24" aria-label="Favorit"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>');
     if (mine) marks.push('<span class="mark">● Meine Bewertung</span>');
     else if (hint === 'ok') marks.push('<span class="mark">✓ Für dich wohl ok</span>');
     else if (hint === 'bad') marks.push('<span class="mark" style="color:var(--r)">! Deine Problemgruppe</span>');
     if (it.own) marks.push('<span class="mark">Eigener Eintrag</span>');
-    return `<button type="button" class="item s-${st}" data-id="${esc(it.id)}">
+    const fav = !!store.favs[it.id];
+    return `<div class="item-wrap"><button type="button" class="item s-${st}" data-id="${esc(it.id)}">
       <span class="item-main">
         <span class="item-name">${esc(it.name)}${via ? `<small>${esc(via)}</small>` : ''}</span>
         <span class="item-sub">${esc(subLine(it))}</span>
@@ -206,7 +220,7 @@
         <span class="pill s-${st}">${SHORT[st]}</span>
         ${marks.length ? `<span class="item-tags">${marks.join('')}</span>` : ''}
       </span>
-    </button>`;
+    </button><button type="button" class="item-fav" data-fav="${esc(it.id)}" aria-pressed="${fav}" aria-label="${esc(it.name)} ${fav ? 'aus Merkliste entfernen' : 'merken'}">${STAR}</button></div>`;
   }
 
   function renderList(container, rows, emptyHTML) {
@@ -532,7 +546,7 @@
     const own = ALL.filter((i) => i.own);
     const lists = { favs, rated, own };
     const empties = {
-      favs: '<div class="empty"><div class="big">⭐</div><p><strong>Noch keine Favoriten.</strong></p><p>Öffne ein Lebensmittel und tippe auf «Merken».</p></div>',
+      favs: '<div class="empty"><div class="big">⭐</div><p><strong>Noch keine Favoriten.</strong></p><p>Tippe in der Liste auf den Stern ☆ oder öffne ein Lebensmittel und tippe auf «Merken».</p></div>',
       rated: '<div class="empty"><div class="big">📝</div><p><strong>Noch nichts bewertet.</strong></p><p>Bewerte Lebensmittel nach deiner eigenen Erfahrung – deine Bewertung ersetzt dann die Ampel.</p></div>',
       own: '<div class="empty"><div class="big">➕</div><p><strong>Noch keine eigenen Einträge.</strong></p><p>Fehlt dir ein Produkt? Lege es selbst an.</p></div>',
     };
@@ -577,6 +591,12 @@
     if (e.target.closest('#add-food')) { openFoodForm(); return; }
     if (e.target.closest('#exp')) { exportData(); return; }
     if (e.target.closest('#imp')) { $('#imp-file').click(); return; }
+    const favBtn = e.target.closest('[data-fav]');
+    if (favBtn) {
+      toggleFavFromList(favBtn);
+      if (mineTab === 'favs') renderMine();
+      return;
+    }
     const item = e.target.closest('.item');
     if (item) openDetail(item.dataset.id);
   });
@@ -769,6 +789,8 @@
       state.groups.clear(); elQ.value = ''; renderSearch(); return;
     }
     if (e.target.closest('#add-from-search')) { openFoodForm(null, state.q); return; }
+    const favBtn = e.target.closest('[data-fav]');
+    if (favBtn) { toggleFavFromList(favBtn); return; }
     const it = e.target.closest('[data-id]');
     if (it) openDetail(it.dataset.id);
   });

@@ -2,6 +2,8 @@
 
 Installierbare Web-App (PWA): 663 Lebensmittel mit Ampel (verträglich / gelegentlich / meiden), Portionen, FODMAP-Gruppen, Zutaten-Check und persönlichen Bewertungen. Läuft offline.
 
+- **App:** https://mlplugins.github.io/bauchgefuehl
+- **Code:** https://github.com/mlplugins/bauchgefuehl
 ## Lokal testen
 
 ```bash
