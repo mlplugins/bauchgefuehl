@@ -3,3 +3,5 @@ node_modules/
 *.log
 Thumbs.db
 desktop.ini
+api/.env
+api/data/

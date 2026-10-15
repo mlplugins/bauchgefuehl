@@ -1,0 +1,14 @@
+services:
+  bauchgefuehl-api:
+    build: .
+    container_name: bauchgefuehl-api
+    restart: unless-stopped
+    env_file: .env
+    # Nur lokal erreichbar – nach aussen geht es über den Reverse Proxy (https)
+    ports:
+      - "127.0.0.1:8787:8787"
+    volumes:
+      - bauchgefuehl-data:/data
+
+volumes:
+  bauchgefuehl-data:

@@ -1,6 +1,6 @@
 /* Service Worker: macht die App offline nutzbar.
  * Bei jeder Änderung an Dateien oder Daten VERSION erhöhen, damit Geräte das Update erhalten. */
-const VERSION = 'bauchgefuehl-v1.2.0';
+const VERSION = 'bauchgefuehl-v1.3.0';
 const ASSETS = [
   './',
   'index.html',
@@ -8,7 +8,10 @@ const ASSETS = [
   'css/app.css',
   'js/data-core.js',
   'js/ingredients.js',
+  'js/config.js',
+  'js/sync.js',
   'js/app.js',
+  'datenschutz.html',
   'data/01-gemuese-kraeuter.js',
   'data/02-obst.js',
   'data/03-getreide-brot.js',

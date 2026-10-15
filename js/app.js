@@ -3,7 +3,7 @@
 
   const { CATEGORIES, GROUPS, STATUS, items: BASE_ITEMS, slug } = window.FODMAP;
   const CAT = Object.fromEntries(CATEGORIES.map((c) => [c.id, c]));
-  const VERSION = '1.0.0';
+  const VERSION = '1.3.0';
 
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -13,9 +13,16 @@
   const LONG = { g: 'Verträglich', y: 'Gelegentlich – Portion beachten', r: 'Besser meiden' };
   const MY = { g: 'Vertrage ich gut', y: 'Nur wenig', r: 'Vertrage ich nicht' };
 
-  // ---------- Speicher (nur auf diesem Gerät) ----------
+  // ---------- Speicher (auf dem Gerät, optional mit Konto abgeglichen) ----------
   const KEY = 'bauchgefuehl.v1';
+  const CONFIG = window.BAUCHGEFUEHL_CONFIG || {};
   const store = loadStore();
+  const sync = window.BauchSync.create({
+    api: CONFIG.api,
+    store,
+    persist: writeStore,
+    onChange: () => { buildIndex(); refreshCurrent(); },
+  });
 
   function loadStore() {
     const def = { ratings: {}, favs: {}, notes: {}, custom: [], groups: {}, recent: [], theme: 'auto' };
@@ -25,9 +32,13 @@
     } catch (e) { /* privater Modus o.ä. */ }
     return def;
   }
-  function save() {
+  function writeStore() {
     try { localStorage.setItem(KEY, JSON.stringify(store)); }
     catch (e) { toast('Speichern nicht möglich'); }
+  }
+  function save() {
+    writeStore();
+    sync.track();
   }
   try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) { /* optional */ }
 
@@ -483,7 +494,7 @@
     const it = existing || { name: presetName || '', cat: 'fertig', status: 'g', aliases: [], portion: '', limit: '', groups: [], note: '' };
     const html = `
       <h2>${existing ? 'Eintrag bearbeiten' : 'Eigenes Lebensmittel'}</h2>
-      <p class="muted" style="margin:6px 0 14px">Wird nur auf diesem Gerät gespeichert.</p>
+      <p class="muted" style="margin:6px 0 14px">${sync.status().loggedIn ? 'Wird mit deinem Konto auf allen Geräten abgeglichen.' : 'Wird auf diesem Gerät gespeichert.'}</p>
       <form id="food-form">
         <label class="field"><span>Name *</span><input type="text" name="name" required value="${esc(it.name)}" placeholder="z.B. Zweifel Paprika Chips"></label>
         <label class="field"><span>Kategorie</span><select name="cat">${CATEGORIES.map((c) => `<option value="${c.id}" ${c.id === it.cat ? 'selected' : ''}>${c.icon} ${esc(c.name)}</option>`).join('')}</select></label>
@@ -551,6 +562,7 @@
       own: '<div class="empty"><div class="big">➕</div><p><strong>Noch keine eigenen Einträge.</strong></p><p>Fehlt dir ein Produkt? Lege es selbst an.</p></div>',
     };
     el.innerHTML = `
+      ${accountBarHTML()}
       <div class="seg" id="mine-seg" style="grid-template-columns:repeat(3,1fr);margin:0 0 12px">
         ${[['favs', 'Favoriten'], ['rated', 'Bewertet'], ['own', 'Eigene']].map(([k, l]) => `<button type="button" data-tab="${k}" aria-selected="${mineTab === k}">${l}<span class="n">${lists[k].length}</span></button>`).join('')}
       </div>
@@ -566,7 +578,9 @@
 
       <div class="section-title">Sicherung</div>
       <div class="card">
-        <p class="muted" style="font-size:13px">Deine Daten liegen nur auf diesem Gerät. Erstelle ab und zu eine Sicherung, z.B. vor einem Handywechsel.</p>
+        <p class="muted" style="font-size:13px">${sync.status().loggedIn
+    ? 'Deine Daten sind mit deinem Konto gesichert. Zusätzlich kannst du sie als Datei speichern.'
+    : 'Deine Daten liegen nur auf diesem Gerät. Melde dich an oder erstelle ab und zu eine Sicherung, z.B. vor einem Handywechsel.'}</p>
         <div class="row gap">
           <button type="button" class="btn" id="exp">Sicherung exportieren</button>
           <button type="button" class="btn" id="imp">Sicherung importieren</button>
@@ -588,6 +602,7 @@
       $$('button', tri.parentElement).forEach((b) => b.setAttribute('aria-pressed', String(b === tri)));
       return;
     }
+    if (e.target.closest('#account-bar')) { openAccount(); return; }
     if (e.target.closest('#add-food')) { openFoodForm(); return; }
     if (e.target.closest('#exp')) { exportData(); return; }
     if (e.target.closest('#imp')) { $('#imp-file').click(); return; }
@@ -628,6 +643,177 @@
       } catch (e) { toast('Datei konnte nicht gelesen werden'); }
     };
     r.readAsText(file);
+  }
+
+  // ---------- Konto & Abgleich ----------
+  function ago(t) {
+    const s = (Date.now() - t) / 1000;
+    if (s < 60) return 'gerade eben';
+    if (s < 3600) return `vor ${Math.round(s / 60)} Min.`;
+    if (s < 86400) return `vor ${Math.round(s / 3600)} Std.`;
+    return 'am ' + new Date(t).toLocaleDateString('de-CH');
+  }
+
+  function syncLine(s) {
+    if (s.busy) return 'Wird abgeglichen …';
+    if (s.error) return s.error;
+    return s.lastSync ? `Abgeglichen ${ago(s.lastSync)}` : 'Noch nicht abgeglichen';
+  }
+
+  function accountBarHTML() {
+    const s = sync.status();
+    if (!s.loggedIn) {
+      return `<button type="button" class="account-bar" id="account-bar">
+        <span class="ab-icon" aria-hidden="true">☁️</span>
+        <span class="ab-text"><b>Auf allen Geräten nutzen</b><small>Melde dich an, damit Merkliste und Bewertungen auf Handy und Computer gleich sind.</small></span>
+        <span class="ab-go">Anmelden</span>
+      </button>`;
+    }
+    return `<button type="button" class="account-bar in" id="account-bar">
+      <span class="ab-icon" aria-hidden="true">${s.error ? '⚠️' : '☁️'}</span>
+      <span class="ab-text"><b>${esc(s.email)}</b><small>${esc(syncLine(s))}</small></span>
+      <span class="ab-go">Konto</span>
+    </button>`;
+  }
+
+  let accountSheet = null; // 'login' | 'account' solange das Konto-Fenster offen ist
+  sync.subscribe((s) => {
+    const bar = $('#account-bar');
+    if (bar) bar.outerHTML = accountBarHTML();
+    if (accountSheet === 'account') { const el = $('#acc-status'); if (el) el.textContent = syncLine(s); }
+  });
+
+  function openAccount() {
+    if (sync.status().loggedIn) openAccountSheet(); else openLoginSheet();
+  }
+
+  function loadGoogle() {
+    return new Promise((resolve, reject) => {
+      if (window.google && window.google.accounts) return resolve();
+      const s = document.createElement('script');
+      s.src = 'https://accounts.google.com/gsi/client';
+      s.async = true;
+      s.onload = resolve; s.onerror = reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  function loggedInDone() {
+    toast('Angemeldet – deine Daten werden abgeglichen');
+    closeSheet();
+  }
+
+  function openLoginSheet() {
+    const html = `
+      <h2>Anmelden</h2>
+      <p class="muted" style="margin:6px 0 16px">Mit einem Konto sind Merkliste, Bewertungen, Notizen und eigene Einträge auf allen deinen Geräten gleich. Ein Passwort brauchst du nicht.</p>
+      ${CONFIG.googleClientId ? '<div id="g-btn" class="g-btn"></div><div class="or"><span>oder</span></div>' : ''}
+      <form id="login-email">
+        <label class="field"><span>E-Mail-Adresse</span><input type="email" name="email" required autocomplete="email" placeholder="name@beispiel.ch"></label>
+        <button type="submit" class="btn btn-primary btn-block">Code per E-Mail senden</button>
+      </form>
+      <form id="login-code" hidden>
+        <p>Wir haben dir einen 6-stelligen Code an <b id="lc-mail"></b> geschickt. Du kannst auch einfach auf den Link in der E-Mail tippen.</p>
+        <label class="field"><span>Code</span><input name="code" required inputmode="numeric" autocomplete="one-time-code" maxlength="7" placeholder="123456"></label>
+        <button type="submit" class="btn btn-primary btn-block">Anmelden</button>
+        <button type="button" class="btn btn-ghost btn-block" id="lc-back">Andere E-Mail-Adresse</button>
+      </form>
+      <p class="login-error" id="login-error" hidden></p>
+      <p class="hint">Mit der Anmeldung stimmst du der <a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a> zu.</p>`;
+
+    const mount = (body) => {
+      let email = '';
+      const err = $('#login-error', body);
+      const showError = (e) => { err.textContent = e && e.message ? e.message : 'Server nicht erreichbar'; err.hidden = false; };
+      const busy = (form, on) => { $$('button', form).forEach((b) => { b.disabled = on; }); };
+
+      $('#login-email', body).addEventListener('submit', async (e) => {
+        e.preventDefault();
+        err.hidden = true;
+        email = String(new FormData(e.target).get('email') || '').trim();
+        busy(e.target, true);
+        try {
+          await sync.startEmail(email);
+          $('#lc-mail', body).textContent = email;
+          e.target.hidden = true;
+          $('#login-code', body).hidden = false;
+          $('#login-code input', body).focus();
+        } catch (x) { showError(x); }
+        busy(e.target, false);
+      });
+
+      $('#login-code', body).addEventListener('submit', async (e) => {
+        e.preventDefault();
+        err.hidden = true;
+        busy(e.target, true);
+        try {
+          await sync.verifyCode(email, String(new FormData(e.target).get('code') || ''));
+          loggedInDone();
+        } catch (x) { showError(x); busy(e.target, false); }
+      });
+
+      $('#lc-back', body).addEventListener('click', () => {
+        $('#login-code', body).hidden = true;
+        $('#login-email', body).hidden = false;
+        err.hidden = true;
+      });
+
+      if (CONFIG.googleClientId) {
+        loadGoogle().then(() => {
+          const el = $('#g-btn', body);
+          if (!el) return;
+          window.google.accounts.id.initialize({
+            client_id: CONFIG.googleClientId,
+            callback: (r) => sync.google(r.credential).then(loggedInDone, showError),
+          });
+          window.google.accounts.id.renderButton(el, { theme: 'outline', size: 'large', shape: 'pill', text: 'continue_with', locale: 'de', width: 280 });
+        }).catch(() => { const el = $('#g-btn', body); if (el) el.remove(); });
+      }
+    };
+    accountSheet = 'login';
+    openSheet(html, mount, () => { accountSheet = null; refreshCurrent(); });
+  }
+
+  function openAccountSheet() {
+    const s = sync.status();
+    const html = `
+      <h2>Konto</h2>
+      <p style="margin:6px 0 2px">Angemeldet als <b>${esc(s.email)}</b></p>
+      <p class="muted" id="acc-status" style="margin:0 0 16px">${esc(syncLine(s))}</p>
+      <div class="row gap">
+        <button type="button" class="btn" id="acc-sync">Jetzt abgleichen</button>
+        <button type="button" class="btn" id="acc-logout">Abmelden</button>
+      </div>
+      <p class="hint">Merkliste, Bewertungen, Notizen, eigene Einträge und deine Gruppen-Verträglichkeit werden automatisch mit allen Geräten abgeglichen, auf denen du angemeldet bist.</p>
+      <div class="danger-zone">
+        <h3>Konto löschen</h3>
+        <p class="muted">Löscht dein Konto und alle deine Daten auf dem Server sofort und endgültig. Die Daten auf diesem Gerät bleiben erhalten.</p>
+        <button type="button" class="btn btn-danger" id="acc-delete">Konto löschen</button>
+      </div>
+      <p class="hint"><a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a></p>`;
+
+    const mount = (body) => {
+      $('#acc-sync', body).addEventListener('click', () => sync.syncNow());
+      $('#acc-logout', body).addEventListener('click', async () => {
+        await sync.logout();
+        closeSheet();
+        toast('Abgemeldet – deine Daten bleiben auf diesem Gerät');
+      });
+      $('#acc-delete', body).addEventListener('click', async (e) => {
+        if (!confirm('Konto wirklich löschen?\n\nDein Konto und alle Daten auf dem Server werden endgültig gelöscht. Die Daten auf diesem Gerät bleiben erhalten.')) return;
+        e.target.disabled = true;
+        try {
+          await sync.deleteAccount();
+          closeSheet();
+          toast('Dein Konto wurde gelöscht');
+        } catch (x) {
+          e.target.disabled = false;
+          toast(x.message || 'Löschen fehlgeschlagen');
+        }
+      });
+    };
+    accountSheet = 'account';
+    openSheet(html, mount, () => { accountSheet = null; refreshCurrent(); });
   }
 
   // ---------- Zutaten-Check ----------
@@ -713,6 +899,11 @@
         <div class="seg" id="theme-seg" style="grid-template-columns:repeat(3,1fr);margin-top:4px">
           ${[['auto', 'Automatisch'], ['light', 'Hell'], ['dark', 'Dunkel']].map(([v, l]) => `<button type="button" data-theme="${v}" aria-selected="${store.theme === v}">${l}</button>`).join('')}
         </div>
+      </div>
+      <div class="card">
+        <h2>Konto & Datenschutz</h2>
+        <p>Ohne Konto bleiben deine Daten nur auf diesem Gerät. Mit einem Konto (unter «Meine») werden sie mit deinen anderen Geräten abgeglichen. Das Konto kannst du jederzeit löschen.</p>
+        <p><a href="datenschutz.html" target="_blank" rel="noopener">Datenschutzerklärung</a></p>
       </div>
       <div class="card">
         <h2>Als App installieren</h2>
@@ -844,6 +1035,12 @@
   $('#count-total').textContent = `${BASE_ITEMS.length} Lebensmittel`;
   renderStatusSeg();
   renderCatChips();
+  // Anmeldelink aus der E-Mail: ?login=… einlösen und aus der Adresse entfernen
+  const loginLink = new URLSearchParams(location.search).get('login');
+  if (loginLink) {
+    history.replaceState(null, '', location.pathname + (location.hash || '#/meine'));
+    sync.verifyLink(loginLink).then(() => toast('Angemeldet – deine Daten werden abgeglichen'), (e) => toast(e.message || 'Anmeldung fehlgeschlagen'));
+  }
   if (!location.hash) history.replaceState(null, '', '#/suche');
   route();
 })();

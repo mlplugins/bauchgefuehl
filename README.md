@@ -36,9 +36,13 @@ Name | Ampel | Synonyme | Verträgliche Portion | Kritisch ab | Gruppen | Hinwei
 
 **Wichtig:** Nach jeder Änderung in `sw.js` die `VERSION` erhöhen. Sonst erhält das installierte Handy das Update nicht.
 
-## Persönliche Daten
+## Persönliche Daten und Konto
 
-Bewertungen, Favoriten, Notizen und eigene Einträge liegen nur im Browser des Geräts. Unter «Meine → Sicherung» lassen sie sich als JSON-Datei exportieren und wieder importieren.
+Bewertungen, Favoriten, Notizen und eigene Einträge liegen im Browser des Geräts. Unter «Meine → Sicherung» lassen sie sich als JSON-Datei exportieren und wieder importieren.
+
+Wer sich unter «Meine» anmeldet (E-Mail-Code oder Google), dessen Daten werden über den eigenen Server abgeglichen – so sind Merkliste und Bewertungen auf Handy und Computer gleich. Der Server liegt im Ordner [`api/`](api/README.md) (Node.js + SQLite, Docker) und läuft unter `https://bauchgefuehl.mlplugins.com/api`. Adresse und Google-Client-ID der App stehen in `js/config.js`.
+
+Lokal testen mit Konto: zusätzlich `cd api && npm install && npm start` – die Anmeldecodes erscheinen dann in der Konsole.
 
 ## Hinweis
 
