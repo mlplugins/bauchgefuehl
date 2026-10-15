@@ -1,135 +1,117 @@
-# Bauchgefühl-API
+# Bauchgefühl-API (PHP)
 
-Kleiner Server für Konten und den Abgleich zwischen Geräten. Er speichert pro Konto:
-E-Mail-Adresse, optional die Google-Konto-ID und die persönlichen App-Daten
-(Merkliste, Bewertungen, Notizen, eigene Einträge, Gruppen-Verträglichkeit).
-Node.js + SQLite, läuft als Docker-Container.
+Kleiner Server für Konten und den Abgleich zwischen Geräten. Läuft auf normalem PHP-Webhosting
+(Hetzner konsoleH) mit MariaDB/MySQL, ohne Docker und ohne Kommandozeile.
 
-## Installation auf dem Server (Hetzner)
+Gespeichert wird pro Konto: E-Mail-Adresse, optional die Google-Konto-ID und die persönlichen
+App-Daten (Merkliste, Bewertungen, Notizen, eigene Einträge, Gruppen-Verträglichkeit).
 
-1. Repo auf den Server holen und in den Ordner wechseln:
+## Einrichten auf Hetzner (konsoleH)
 
-   ```bash
-   git clone https://github.com/mlplugins/bauchgefuehl.git
-   cd bauchgefuehl/api
+### 1. Subdomain anlegen
+
+In konsoleH die Subdomain `bauchgefuehl.mlplugins.com` anlegen und **SSL (Let's Encrypt)** aktivieren.
+PHP 8.1 oder neuer auswählen.
+
+### 2. Datenbank anlegen
+
+In konsoleH unter «Datenbanken» eine neue **MariaDB/MySQL-Datenbank** mit Benutzer anlegen.
+Datenbankname, Benutzer, Passwort und Server (meist `localhost`, sonst steht der Hostname in konsoleH) notieren.
+
+### 3. Dateien per FTP hochladen
+
+In das Verzeichnis der Subdomain hochladen:
+
+```
+index.html
+datenschutz.html
+manifest.webmanifest
+sw.js
+css/
+js/
+data/
+icons/
+api/          (index.php, lib.php, .htaccess, config.example.php, data/.htaccess)
+```
+
+Nicht nötig: `tests/`, `server.js`, `README.md`, `.git`.
+
+Achtung: Dateien, die mit einem Punkt beginnen (`.htaccess`), blenden manche FTP-Programme aus.
+In FileZilla: Menü «Server» → «Anzeige versteckter Dateien erzwingen».
+
+### 4. config.php anlegen
+
+1. Im Browser `https://bauchgefuehl.mlplugins.com/api/index.php/health` öffnen.
+   Die Antwort meldet, dass `config.php` fehlt, und schlägt unter `secret_vorschlag` einen Zufallswert vor.
+2. `api/config.example.php` kopieren, als `api/config.php` speichern und ausfüllen:
+   - `db` → `name`, `user`, `pass` (und `host`, falls nicht `localhost`)
+   - `secret` → den vorgeschlagenen Zufallswert
+3. `config.php` per FTP in den Ordner `api/` hochladen.
+4. `https://bauchgefuehl.mlplugins.com/api/index.php/health` nochmals öffnen. Antwort:
+
+   ```json
+   {"ok":true,"mail":"php","google":false}
    ```
 
-2. Einstellungen anlegen:
+   Die Tabellen (alle mit Präfix `bg_`) legt der Server dabei selbst an.
 
-   ```bash
-   cp .env.example .env
-   openssl rand -hex 32
-   ```
+### 5. Ausprobieren
 
-   Den ausgegebenen Wert bei `SECRET=` eintragen, dann die SMTP-Angaben ergänzen
-   (siehe unten). `GOOGLE_CLIENT_ID` kann vorerst leer bleiben.
+`https://bauchgefuehl.mlplugins.com` öffnen → «Meine» → «Anmelden» → E-Mail-Adresse eingeben.
+Der Code kommt per E-Mail.
 
-3. Starten:
+## E-Mail-Versand
 
-   ```bash
-   docker compose up -d --build
-   curl http://127.0.0.1:8787/api/health
-   ```
+Die Mails gehen über PHP `mail()` des Hostings raus. Als Absender (`from_address` in `config.php`)
+eine Adresse einer Domain nehmen, die bei Hetzner liegt, z.B. `noreply@mlplugins.com`.
+Kommen keine Mails an: Spam-Ordner prüfen und in konsoleH kontrollieren, ob für die Domain SPF eingerichtet ist.
 
-   Antwort: `{"ok":true}`.
+Zum Testen ohne Mailversand: `'mode' => 'log'` – die Codes landen dann in `api/data/mail.log`
+(per FTP herunterladen). Danach wieder auf `'php'` stellen.
 
-4. Reverse Proxy für `https://bauchgefuehl.mlplugins.com` einrichten (siehe unten) und im
-   DNS einen A-Eintrag `bauchgefuehl` auf die Server-IP setzen.
+## Google-Anmeldung (optional)
 
-### Reverse Proxy
-
-**Caddy** (holt das Zertifikat automatisch):
-
-```
-bauchgefuehl.mlplugins.com {
-    reverse_proxy /api/* 127.0.0.1:8787
-}
-```
-
-**nginx** (Zertifikat z.B. mit certbot):
-
-```nginx
-server {
-    server_name bauchgefuehl.mlplugins.com;
-    listen 443 ssl http2;
-    # ssl_certificate … / ssl_certificate_key … (certbot)
-
-    location /api/ {
-        proxy_pass http://127.0.0.1:8787;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        client_max_body_size 2m;
-    }
-}
-```
-
-Bei **Traefik** statt `ports:` in `docker-compose.yml` die üblichen Labels setzen und den
-Container ins Traefik-Netzwerk hängen.
-
-## E-Mail (SMTP)
-
-Für die Anmeldecodes braucht der Server ein Postfach zum Versenden, z.B. `noreply@mlplugins.com`
-beim bestehenden Mail-Anbieter. In `.env`:
-
-```
-SMTP_HOST=smtp.dein-anbieter.ch
-SMTP_PORT=587
-SMTP_SECURE=0
-SMTP_USER=noreply@mlplugins.com
-SMTP_PASS=…
-MAIL_FROM=Bauchgefühl <noreply@mlplugins.com>
-```
-
-Damit die Mails nicht im Spam landen, sollten SPF und DKIM für die Absender-Domain eingerichtet sein.
-Ohne SMTP-Angaben schreibt der Server die Codes nur ins Log (`docker compose logs`) – praktisch zum Testen.
-
-## Google-Anmeldung
-
-1. https://console.cloud.google.com → Projekt anlegen (oder bestehendes nehmen).
+1. https://console.cloud.google.com → Projekt anlegen.
 2. «APIs & Dienste» → «OAuth-Zustimmungsbildschirm»: Typ «Extern», App-Name «Bauchgefühl»,
-   Link zur Datenschutzerklärung: `https://mlplugins.github.io/bauchgefuehl/datenschutz.html`.
-3. «Anmeldedaten» → «Anmeldedaten erstellen» → «OAuth-Client-ID» → Typ «Webanwendung».
-   Unter «Autorisierte JavaScript-Quellen» eintragen:
-   - `https://mlplugins.github.io`
+   Datenschutz-Link `https://bauchgefuehl.mlplugins.com/datenschutz.html`.
+3. «Anmeldedaten» → «OAuth-Client-ID» → Typ «Webanwendung». Unter «Autorisierte JavaScript-Quellen»:
    - `https://bauchgefuehl.mlplugins.com`
-   - `http://localhost:5173` (zum lokalen Testen)
-4. Die Client-ID (endet auf `.apps.googleusercontent.com`) an zwei Stellen eintragen:
-   - Server: `GOOGLE_CLIENT_ID=` in `.env`, dann `docker compose up -d`
+   - `https://mlplugins.github.io`
+   - `http://localhost:5173` (lokales Testen)
+4. Die Client-ID (`….apps.googleusercontent.com`) eintragen:
+   - Server: `google_client_id` in `api/config.php`
    - App: `googleClientId` in `js/config.js`
 
-Die Client-ID ist nicht geheim und darf im Repo stehen.
+Die Client-ID ist nicht geheim.
 
 ## Updates
 
-```bash
-cd bauchgefuehl && git pull && cd api && docker compose up -d --build
-```
+Geänderte Dateien einfach wieder per FTP hochladen. `api/config.php` nie überschreiben –
+sie liegt nicht im Git-Repo. Nach Änderungen an der App die `VERSION` in `sw.js` erhöhen,
+damit installierte Apps das Update laden.
 
-## Sicherung der Datenbank
+## Sicherheit und Datenschutz
 
-Die Datenbank liegt im Docker-Volume `api_bauchgefuehl-data`. Sicherung im laufenden Betrieb:
-
-```bash
-docker compose exec bauchgefuehl-api node -e "require('better-sqlite3')('/data/bauchgefuehl.db').backup('/data/backup.db').then(()=>console.log('ok'))"
-docker cp bauchgefuehl-api:/data/backup.db ./bauchgefuehl-backup-$(date +%F).db
-```
+- `.htaccess` sperrt `config.php`, `lib.php` und den Ordner `data/` für direkte Aufrufe.
+- In der Datenbank liegen nur Hashes von Anmeldecodes, Sitzungen und Begrenzungs-Schlüsseln, nie Klartext-Werte.
+- Anmeldecodes verfallen nach 15 Minuten, Sitzungen nach 400 Tagen ohne Nutzung.
+- Pro E-Mail-Adresse höchstens 5 Code-Anfragen in 15 Minuten, 5 Fehlversuche pro Code.
+- «Konto löschen» in der App entfernt Konto, Sitzungen und Daten sofort.
 
 ## Lokal entwickeln
 
+PHP 8.1+ mit `pdo_sqlite` (und `openssl`, `curl`, `mbstring`). Lokale `api/config.php` z.B. mit
+`'db' => ['driver' => 'sqlite', 'path' => __DIR__ . '/data/dev.sqlite']` und `'mail' => ['mode' => 'log']`.
+
 ```bash
-cd api
-npm install
-npm start      # http://localhost:8787, Codes erscheinen in der Konsole
-npm test
+php -S localhost:8787 -t .
 ```
 
-Die App unter `http://localhost:5173` (`node server.js` im Hauptordner) spricht automatisch mit
-`http://localhost:8787/api`.
+Die App unter `http://localhost:5173` (`node server.js`) oder direkt unter `http://localhost:8787`
+spricht dann mit `http://localhost:8787/api/index.php`.
 
-## Datenschutz
+Tests (starten eigene PHP-Server mit Wegwerf-Datenbank):
 
-- In der Datenbank liegen nur Hashes von Anmeldecodes und Sitzungen, nie die Klartext-Werte.
-- Anmeldecodes verfallen nach 15 Minuten, Sitzungen nach 400 Tagen ohne Nutzung.
-- «Konto löschen» in der App entfernt Konto, Sitzungen und Daten sofort und endgültig.
-- Der Server protokolliert keine E-Mail-Adressen (ausser im Testmodus ohne SMTP).
+```bash
+PHP_BIN=php node tests/api.test.js
+```

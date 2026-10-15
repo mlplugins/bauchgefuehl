@@ -1,0 +1,4 @@
+# Zugangsdaten, Vorlagen und Daten nie direkt ausliefern
+<FilesMatch "^(config\.php|config\.example\.php|lib\.php|README\.md)$">
+    Require all denied
+</FilesMatch>

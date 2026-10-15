@@ -2,7 +2,7 @@
 
 Installierbare Web-App (PWA): 761 Lebensmittel mit Ampel (verträglich / gelegentlich / meiden), Portionen, FODMAP-Gruppen, Zutaten-Check und persönlichen Bewertungen. Läuft offline. Gedacht für die Schweiz, Deutschland und Österreich: Die Suche kennt auch die regionalen Namen (z.B. Rüebli, Möhre, Karotte oder Quark, Topfen).
 
-- **App:** https://mlplugins.github.io/bauchgefuehl
+- **App:** https://bauchgefuehl.mlplugins.com (Kopie ohne eigenen Server: https://mlplugins.github.io/bauchgefuehl)
 - **Code:** https://github.com/mlplugins/bauchgefuehl
 
 ## Lokal testen
@@ -40,9 +40,9 @@ Name | Ampel | Synonyme | Verträgliche Portion | Kritisch ab | Gruppen | Hinwei
 
 Bewertungen, Favoriten, Notizen und eigene Einträge liegen im Browser des Geräts. Unter «Meine → Sicherung» lassen sie sich als JSON-Datei exportieren und wieder importieren.
 
-Wer sich unter «Meine» anmeldet (E-Mail-Code oder Google), dessen Daten werden über den eigenen Server abgeglichen – so sind Merkliste und Bewertungen auf Handy und Computer gleich. Der Server liegt im Ordner [`api/`](api/README.md) (Node.js + SQLite, Docker) und läuft unter `https://bauchgefuehl.mlplugins.com/api`. Adresse und Google-Client-ID der App stehen in `js/config.js`.
+Wer sich unter «Meine» anmeldet (E-Mail-Code oder Google), dessen Daten werden über den eigenen Server abgeglichen – so sind Merkliste und Bewertungen auf Handy und Computer gleich. Der Server liegt im Ordner [`api/`](api/README.md) (PHP + MariaDB/MySQL) und läuft zusammen mit der App per FTP auf dem Hetzner-Webhosting unter `https://bauchgefuehl.mlplugins.com`. Die Einrichtung steht in [api/README.md](api/README.md). Adresse und Google-Client-ID der App stehen in `js/config.js`.
 
-Lokal testen mit Konto: zusätzlich `cd api && npm install && npm start` – die Anmeldecodes erscheinen dann in der Konsole.
+Lokal testen mit Konto: `php -S localhost:8787 -t .` (mit einer lokalen `api/config.php`, siehe api/README.md).
 
 ## Hinweis
 

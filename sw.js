@@ -1,6 +1,6 @@
 /* Service Worker: macht die App offline nutzbar.
  * Bei jeder Änderung an Dateien oder Daten VERSION erhöhen, damit Geräte das Update erhalten. */
-const VERSION = 'bauchgefuehl-v1.3.0';
+const VERSION = 'bauchgefuehl-v1.3.1';
 const ASSETS = [
   './',
   'index.html',
@@ -48,7 +48,7 @@ self.addEventListener('message', (e) => {
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
-  if (url.origin !== self.location.origin) return;
+  if (url.origin !== self.location.origin || url.pathname.includes('/api/')) return;
   e.respondWith(
     caches.match(e.request, { ignoreSearch: true }).then((hit) => {
       if (hit) return hit;

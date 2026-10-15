@@ -3,5 +3,6 @@ node_modules/
 *.log
 Thumbs.db
 desktop.ini
-api/.env
-api/data/
+api/config.php
+api/data/*
+!api/data/.htaccess

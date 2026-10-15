@@ -99,7 +99,7 @@
       try {
         r = await fetch(api + path, {
           method,
-          headers: { 'Content-Type': 'application/json', ...(meta.token ? { Authorization: 'Bearer ' + meta.token } : {}) },
+          headers: { 'Content-Type': 'application/json', ...(meta.token ? { 'X-Auth-Token': meta.token } : {}) },
           body: body ? JSON.stringify(body) : undefined,
         });
       } catch (e) {
