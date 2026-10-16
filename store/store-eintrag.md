@@ -92,14 +92,14 @@ Die Anmeldung ist freiwillig und nur für den Abgleich zwischen Geräten. Die Pr
 - E-Mail-Adresse: support@mlplugins.com
 - Kategorie: **Alle anderen App-Typen** (Referenz, Nachrichten oder Bildung)
 - Gewalt, Sexualität, Angst, Glücksspiel, Vulgärsprache: **Nein**
-- Drogen, Alkohol, Tabak: Die Liste enthält alkoholische Getränke (z.B. Bier, Wein, Cognac) als Lebensmitteleinträge. Ehrlich mit **Ja – nur Erwähnung/Hinweis** antworten, keine Darstellung von Konsum, keine Verherrlichung. Das kann die Freigabe leicht erhöhen (z.B. PEGI 12 statt 3); für die Zielgruppe ab 18 spielt das keine Rolle.
+- Drogen, Alkohol, Tabak: Bier, Wein usw. stehen nur als Lebensmittel mit FODMAP-Angaben in der Liste, es gibt keine Darstellung oder Werbung für Konsum und nichts zu kaufen. Fragt der Bogen nach Darstellung oder Förderung von Konsum: **Nein**. Fragt er ausdrücklich nach jeder «Erwähnung»: **Ja**. Das ändert höchstens das Alters-Label im Store und sperrt die App für niemanden.
 - Können Nutzer miteinander kommunizieren oder Inhalte teilen? **Nein** (alles bleibt privat)
 - Wird der Standort geteilt? **Nein**
 - Digitale Käufe? **Nein**
 - Unbeschränkter Internetzugang (Webbrowser)? **Nein**
 
 ### Zielgruppe und Inhalte
-- Altersgruppe: **18 und älter**
+- Altersgruppen: **13–15, 16–17 und 18 und älter** (nur «unter 13» weglassen, sonst gelten die strengeren Familien-Richtlinien von Google)
 - Spricht die App Kinder an? **Nein**
 
 ### Nachrichten-App
