@@ -99,7 +99,6 @@ Weitere Modi: `'php'` nutzt PHP `mail()` des Hostings, `'log'` schreibt die Code
    Datenschutz-Link `https://bauchgefuehl.mlplugins.com/datenschutz.html`.
 3. «Anmeldedaten» → «OAuth-Client-ID» → Typ «Webanwendung». Unter «Autorisierte JavaScript-Quellen»:
    - `https://bauchgefuehl.mlplugins.com`
-   - `https://mlplugins.github.io`
    - `http://localhost:5173` (lokales Testen)
 4. Die Client-ID (`….apps.googleusercontent.com`) eintragen:
    - Server: `google_client_id` in `api/config.php`

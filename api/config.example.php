@@ -22,7 +22,6 @@ return [
     // Webseiten, die die API aufrufen dürfen
     'allowed_origins' => [
         'https://bauchgefuehl.mlplugins.com',
-        'https://mlplugins.github.io',
     ],
 
     // OAuth-Client-ID aus der Google Cloud Console (leer = Google-Anmeldung aus)

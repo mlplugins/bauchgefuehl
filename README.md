@@ -2,7 +2,7 @@
 
 Installierbare Web-App (PWA): 761 Lebensmittel mit Ampel (verträglich / gelegentlich / meiden), Portionen, FODMAP-Gruppen, Zutaten-Check und persönlichen Bewertungen. Läuft offline. Gedacht für die Schweiz, Deutschland und Österreich: Die Suche kennt auch die regionalen Namen (z.B. Rüebli, Möhre, Karotte oder Quark, Topfen).
 
-- **App:** https://bauchgefuehl.mlplugins.com (Kopie ohne eigenen Server: https://mlplugins.github.io/bauchgefuehl)
+- **App:** https://bauchgefuehl.mlplugins.com
 - **Code:** https://github.com/mlplugins/bauchgefuehl
 
 ## Lokal testen
