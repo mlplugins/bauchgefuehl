@@ -37,6 +37,7 @@ Bubblewrap fragt nach den beiden Passwörtern (beide gleich, aus dem Passwort-Ma
 `/.well-known/assetlinks.json` auf dem Server bestätigt, dass App und Website zusammengehören. Nur dann verschwindet die Adressleiste. Darin müssen stehen:
 
 - der Fingerabdruck des **Upload-Schlüssels** (oben, für selbst installierte Test-APKs)
-- der Fingerabdruck der **Play App-Signatur** (Play Console → Testen und veröffentlichen → App-Integrität → App-Signatur → «Zertifikat für den App-Signaturschlüssel», SHA-256)
+- der Fingerabdruck der **Play App-Signatur** (Play Console → Testen und veröffentlichen → App-Integrität → App-Signatur → «Zertifikat für den App-Signaturschlüssel», SHA-256):
+  `A0:12:EE:B2:4A:39:65:1A:D6:7B:7F:ED:5D:35:5C:14:35:8A:77:C6:AE:0F:F5:2F:4D:F9:BC:EB:9E:FC:01:D9`
 
 Prüfen: https://developers.google.com/digital-asset-links/tools/generator
