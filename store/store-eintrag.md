@@ -4,16 +4,16 @@ Alles zum Kopieren in die Play Console. Feldnamen wie in der deutschen Play Cons
 
 ## Hauptdetails des Store-Eintrags
 
-**App-Name** (30 von max. 30 Zeichen)
+**App-Name** (26 von max. 30 Zeichen)
 
 ```
-Bauchgefühl – FODMAP-Datenbank
+Bauchgefühl – FODMAP-Ampel
 ```
 
-**Kurzbeschreibung** (74 von max. 80 Zeichen)
+**Kurzbeschreibung** (79 von max. 80 Zeichen)
 
 ```
-FODMAP-Ampel für 760 Lebensmittel: Portionen, Zutaten-Check und Merkliste.
+Low-FODMAP-Liste mit 760 Lebensmitteln: Portionen, Zutaten-Check und Merkliste.
 ```
 
 **Vollständige Beschreibung** (max. 4000 Zeichen)

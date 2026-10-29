@@ -1,7 +1,7 @@
 {
   "packageId": "com.mlplugins.bauchgefuehl",
   "host": "bauchgefuehl.mlplugins.com",
-  "name": "Bauchgefühl – FODMAP-Datenbank",
+  "name": "Bauchgefühl – FODMAP-Ampel",
   "launcherName": "Bauchgefühl",
   "display": "standalone",
   "orientation": "portrait",

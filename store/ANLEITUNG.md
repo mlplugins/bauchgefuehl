@@ -21,7 +21,7 @@ Warum so: Mit diesem «Upload-Schlüssel» beweist du Google, dass ein Update wi
 ## 1. App in der Play Console anlegen
 
 1. https://play.google.com/console öffnen → **App erstellen**.
-2. App-Name: `Bauchgefühl – FODMAP-Datenbank` · Standardsprache: **Deutsch – de-DE** · **App** · **Kostenlos**.
+2. App-Name: `Bauchgefühl – FODMAP-Ampel` · Standardsprache: **Deutsch – de-DE** · **App** · **Kostenlos**.
 3. Die beiden Erklärungen (Programmrichtlinien, US-Exportgesetze) bestätigen → **App erstellen**.
 
 ## 2. Interner Test mit der AAB
