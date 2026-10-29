@@ -136,6 +136,6 @@ https://bauchgefuehl.mlplugins.com/datenschutz.html#konto-loeschen
 
 Nicht ankreuzen: Standort, Finanzdaten, Kontakte, Fotos, Dateien, Kalender, Geräte-IDs, Absturzberichte, Analysen, Werbung.
 
-Begründung «nicht geteilt»: Hetzner ist nur Auftragsverarbeiter (Hosting und E-Mail-Versand), das gilt bei Google nicht als Weitergabe.
+Begründung «nicht geteilt»: Hetzner (Hosting und E-Mail-Versand) und Cloudflare (Auslieferung und Schutz vor Angriffen) sind nur Auftragsverarbeiter, das gilt bei Google nicht als Weitergabe.
 
 Später beachten: Wird «Mit Google anmelden» aktiviert (`googleClientId` in `js/config.js`), zusätzlich **Personenbezogene Daten → Nutzer-IDs** (Google-Konto-ID, Zweck Kontoverwaltung) ankreuzen.
