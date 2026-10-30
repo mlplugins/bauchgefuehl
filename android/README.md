@@ -32,6 +32,8 @@ bubblewrap build --skipPwaValidation
 
 Bubblewrap fragt nach den beiden Passwörtern (beide gleich, aus dem Passwort-Manager). Ergebnis: `app-release-bundle.aab` im Projektordner.
 
+Bubblewrap holt das Icon von der Website (`iconUrl`, `maskableIconUrl`). Bei einem neuen Icon deshalb zuerst `icons/` per FTP hochladen, dann bauen.
+
 ## Digital Asset Links
 
 `/.well-known/assetlinks.json` auf dem Server bestätigt, dass App und Website zusammengehören. Nur dann verschwindet die Adressleiste. Darin müssen stehen:

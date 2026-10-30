@@ -82,7 +82,7 @@ Für Organisationskonten nicht Pflicht. Sinnvoll, wenn ein paar Bekannte die App
 ## 8. Produktion
 
 1. **Testen und veröffentlichen → Produktion → Länder/Regionen:** Schweiz, Deutschland, Österreich, Liechtenstein.
-2. **Neuen Release erstellen** → «Aus Mediathek hinzufügen» → die AAB Version 1 (1.0.0) → Versionshinweise → **Überprüfen** → **An Google zur Überprüfung senden**. *(Vorher mir Bescheid geben.)*
+2. **Neuen Release erstellen** → «Aus Mediathek hinzufügen» → die neuste AAB, Version 2 (1.0.1) → Versionshinweise → **Überprüfen** → **An Google zur Überprüfung senden**. *(Vorher mir Bescheid geben.)*
 3. Prüfung durch Google: oft 1–3 Tage, bei neuen Apps bis zu 7 Tage. Danach ist Bauchgefühl im Play Store.
 
 ---
