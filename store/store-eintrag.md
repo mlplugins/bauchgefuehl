@@ -46,7 +46,7 @@ Die Angaben sind Richtwerte auf Basis öffentlich verfügbarer Labordaten und Fa
 Entwickelt in der Schweiz von LoveSpirit KLG (mlplugins.com).
 ```
 
-**Was ist neu** (Versionshinweis für Version 1.0.0)
+**Was ist neu** (Versionshinweis für die erste Version in der Produktion, 1.0.1)
 
 ```
 Erste Version im Play Store.
@@ -60,6 +60,8 @@ Erste Version im Play Store.
 | Feature-Grafik | `store/feature-grafik-1024x500.png` | 1024 × 500 |
 | Smartphone-Screenshots | `screenshots/01-suche.png` bis `06-dunkel.png` | 2–8 Stück, 1080 × 1920 |
 
+**Erklärung zu KI-Assets:** «Assets nicht kennzeichnen» (Entscheid vom 2026-10-31). Symbol und Feature-Grafik sind schlichte, mit KI-Hilfe erstellte Grafiken, die Screenshots echte Aufnahmen der App.
+
 Tablet-Screenshots sind freiwillig. Ohne sie wird die App auf Tablets weniger prominent gezeigt, ist aber installierbar.
 
 ## Store-Einstellungen
@@ -68,7 +70,7 @@ Tablet-Screenshots sind freiwillig. Ohne sie wird die App auf Tablets weniger pr
 - **Kategorie:** Gesundheit & Fitness
 - **Tags:** Ernährung, Gesundheit (die Console schlägt passende vor, bis zu 5)
 - **E-Mail-Adresse:** support@mlplugins.com
-- **Website:** https://bauchgefuehl.mlplugins.com
+- **Website:** leer lassen (freiwillig). `bauchgefuehl.mlplugins.com` führt nur wieder zur App, `mlplugins.com` zeigt WooCommerce-Plugins.
 - **Telefonnummer:** leer lassen (freiwillig)
 - **Kostenlos oder kostenpflichtig:** Kostenlos. Achtung: Eine kostenlose App kann später nicht mehr kostenpflichtig werden.
 - **Länder:** Schweiz, Deutschland, Österreich, Liechtenstein (bei Bedarf Luxemburg)
@@ -81,25 +83,45 @@ Tablet-Screenshots sind freiwillig. Ohne sie wird die App auf Tablets weniger pr
 https://bauchgefuehl.mlplugins.com/datenschutz.html
 ```
 
-### App-Zugriff
-**«Alle Funktionen sind ohne besonderen Zugriff verfügbar.»**
-Die Anmeldung ist freiwillig und nur für den Abgleich zwischen Geräten. Die Prüfer können ohne Zugangsdaten alles testen und bei Bedarf mit ihrer eigenen E-Mail-Adresse ein Konto erstellen.
+### Anmeldedaten (früher «App-Zugriff»)
+**Ja**, ein Teil der App ist zugangsbeschränkt: Abgleich zwischen Geräten und Konto löschen brauchen eine Anmeldung. Die Prüfer können laut Google keine Konten erstellen und keine E-Mails empfangen, deshalb gibt es ein Prüfkonto ([api/README.md](../api/README.md), Abschnitt «Prüfkonto für Google Play»). Adresse und Code stehen in `api/config.php` auf dem Server und im Passwort-Manager, nicht hier.
+
+Anleitung für die Prüfer:
+
+```
+The food lists and all other functions work without an account. An account is optional and only used to sync data between devices.
+
+To sign in, open "Profil", tap "Anmelden", enter the email address above and tap "Code per E-Mail senden". No email is sent for this test account. Enter the code above in the "Code" field. It does not change.
+
+To delete the account, use "Konto löschen" under "Profil". The test account can be used again afterwards.
+```
 
 ### Werbung
 **Nein**, die App enthält keine Werbung.
 
+### Werbe-ID
+**Nein**. Die AAB enthält keine Berechtigung `AD_ID`.
+
 ### Altersfreigabe (Fragebogen, IARC)
 - E-Mail-Adresse: support@mlplugins.com
-- Kategorie: **Alle anderen App-Typen** (Referenz, Nachrichten oder Bildung)
-- Gewalt, Sexualität, Angst, Glücksspiel, Vulgärsprache: **Nein**
-- Drogen, Alkohol, Tabak: Bier, Wein usw. stehen nur als Lebensmittel mit FODMAP-Angaben in der Liste, es gibt keine Darstellung oder Werbung für Konsum und nichts zu kaufen. Fragt der Bogen nach Darstellung oder Förderung von Konsum: **Nein**. Fragt er ausdrücklich nach jeder «Erwähnung»: **Ja**. Das ändert höchstens das Alters-Label im Store und sperrt die App für niemanden.
+- Kategorie: **Alle anderen App-Typen**
+- Freigaberelevante Inhalte im App-Paket? **Nein**
 - Können Nutzer miteinander kommunizieren oder Inhalte teilen? **Nein** (alles bleibt privat)
+- Online-Inhalte, die nicht Teil des App-Downloads sind? **Ja** (die App lädt ihre Inhalte von der Website)
+- Gewalt, Sexualität, anstössige Sprache: **Nein**
+- Drogen, Sucht- und Rauschmittel oder Verweise darauf? **Ja**: Die Liste enthält die Kategorie «Alkohol» mit 🍷-Symbol.
+  - Schwerpunkt der App? **Nein**
+  - Visuelle Darstellungen? **Ja** (das Symbol)
+  - Schriftliche Hinweise? **Ja** (Bier, Wein usw. als Lebensmittel mit FODMAP-Angaben)
+- Schwerpunkt auf Bewerben oder Verkaufen altersbeschränkter Produkte? **Nein**
 - Wird der Standort geteilt? **Nein**
 - Digitale Käufe? **Nein**
-- Unbeschränkter Internetzugang (Webbrowser)? **Nein**
+- Geldauszahlungen, Gutscheine, Krypto-Prämien, NFTs? **Nein**
+- Webbrowser oder Suchmaschine? **Nein**
+- Hauptsächlich Nachrichten oder Bildung? **Nein**
 
 ### Zielgruppe und Inhalte
-- Altersgruppen: **13–15, 16–17 und 18 und älter** (nur «unter 13» weglassen, sonst gelten die strengeren Familien-Richtlinien von Google)
+- Altersgruppen: **16–17 und 18 und älter**. Google weist darauf hin, dass jüngere Nutzer je nach Land als Kinder gelten, dann gelten strengere Regeln, auch beim Datenschutz. Das ist nur die Zielgruppe, keine Sperre für Jüngere.
 - Spricht die App Kinder an? **Nein**
 
 ### Nachrichten-App
@@ -131,8 +153,8 @@ https://bauchgefuehl.mlplugins.com/datenschutz.html#konto-loeschen
 | Kategorie | Datentyp | Zweck |
 |---|---|---|
 | Personenbezogene Daten | E-Mail-Adresse | Kontoverwaltung, App-Funktionen |
-| Gesundheit und Fitness | Gesundheitsinformationen (eigene Bewertungen, Verträglichkeit je FODMAP-Gruppe) | App-Funktionen |
-| App-Aktivitäten | Andere nutzergenerierte Inhalte (Merkliste, Notizen, eigene Lebensmittel) | App-Funktionen |
+| Gesundheit und Fitness | Gesundheitsdaten (eigene Bewertungen, Verträglichkeit je FODMAP-Gruppe) | App-Funktionen |
+| App-Aktivitäten | Andere von Nutzern erstellte Inhalte (Merkliste, Notizen, eigene Lebensmittel) | App-Funktionen |
 
 Nicht ankreuzen: Standort, Finanzdaten, Kontakte, Fotos, Dateien, Kalender, Geräte-IDs, Absturzberichte, Analysen, Werbung.
 

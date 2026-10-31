@@ -59,6 +59,14 @@ function str($v): string
     return is_scalar($v) ? trim((string) $v) : '';
 }
 
+// Festes Konto für die Google-Prüfung: Code aus config.php statt per E-Mail
+function review_code(string $email): ?string
+{
+    $r = config()['review_login'] ?? [];
+    if (strtolower(trim((string) ($r['email'] ?? ''))) !== $email) return null;
+    return preg_match('/^\d{6}$/', (string) ($r['code'] ?? '')) ? (string) $r['code'] : null;
+}
+
 function create_session(int $userId): string
 {
     $t = new_token();
@@ -110,7 +118,8 @@ $routes = [
         if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 191) throw new HttpError(400, 'Bitte eine gültige E-Mail-Adresse eingeben.');
         limit('ip:' . client_ip(), 20, 3600 * 1000);
         limit('mail:' . $email, 5, 15 * 60 * 1000);
-        $code = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        $review = review_code($email);
+        $code = $review ?? str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
         $link = new_token();
         $pdo = db();
         $pdo->beginTransaction();
@@ -119,7 +128,7 @@ $routes = [
             [$email, hmac($email . ':' . $code), hash('sha256', $link), ms() + CODE_TTL]);
         $pdo->commit();
         $appUrl = rtrim(config()['app_url'] ?? 'https://bauchgefuehl.mlplugins.com/', '/') . '/';
-        send_login_mail($email, $code, $appUrl . '?login=' . $link . '#/meine');
+        if ($review === null) send_login_mail($email, $code, $appUrl . '?login=' . $link . '#/meine');
         return ['ok' => true];
     },
 

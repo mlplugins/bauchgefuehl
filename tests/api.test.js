@@ -120,6 +120,39 @@ test('Mehr als 5 Code-Anfragen pro Adresse werden gebremst', async () => {
   } finally { t.close(); }
 });
 
+test('Prüfkonto: fester Code ohne E-Mail, andere Adressen unverändert', async () => {
+  const t = await setup("'review_login' => ['email' => 'Pruefung@example.com', 'code' => '246810']");
+  try {
+    const email = 'pruefung@example.com';
+    assert.strictEqual((await t.call('POST', '/auth/email/start', { email })).status, 200);
+    assert.strictEqual(t.mails().length, 0);
+    assert.strictEqual((await t.call('POST', '/auth/email/verify', { email, code: '111111' })).status, 400);
+    const r = await t.call('POST', '/auth/email/verify', { email, code: '246810' });
+    assert.strictEqual(r.status, 200);
+
+    // Nach dem Löschen entsteht das Konto bei der nächsten Anmeldung neu
+    assert.strictEqual((await t.call('DELETE', '/account', null, r.body.token)).status, 200);
+    await t.call('POST', '/auth/email/start', { email });
+    assert.strictEqual((await t.call('POST', '/auth/email/verify', { email, code: '246810' })).status, 200);
+
+    // Der feste Code gilt nur für diese Adresse
+    const other = 'max@example.com';
+    await t.call('POST', '/auth/email/start', { email: other });
+    assert.strictEqual(t.mails().length, 1);
+    if (t.mails()[0].code !== '246810') {
+      assert.strictEqual((await t.call('POST', '/auth/email/verify', { email: other, code: '246810' })).status, 400);
+    }
+  } finally { t.close(); }
+});
+
+test('Prüfkonto: ohne gültigen Code läuft die normale Anmeldung', async () => {
+  const t = await setup("'review_login' => ['email' => 'pruefung@example.com', 'code' => '123']");
+  try {
+    await t.call('POST', '/auth/email/start', { email: 'pruefung@example.com' });
+    assert.strictEqual(t.mails().length, 1);
+  } finally { t.close(); }
+});
+
 test('Anmeldung per Link aus der E-Mail', async () => {
   const t = await setup();
   try {

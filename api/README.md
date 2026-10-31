@@ -106,6 +106,23 @@ Weitere Modi: `'php'` nutzt PHP `mail()` des Hostings, `'log'` schreibt die Code
 
 Die Client-ID ist nicht geheim.
 
+## Prüfkonto für Google Play
+
+Die Prüfer von Google können keine Konten erstellen und keine E-Mails empfangen. Dafür gibt es ein festes Konto:
+
+```php
+'review_login' => [
+    'email' => 'adresse-nur-fuer-die-pruefung@example.com',
+    'code'  => '123456', // eigene 6 Ziffern, in Anführungszeichen
+],
+```
+
+1. Den Block in `api/config.php` auf dem Server eintragen. Adresse und Code gehören nur dorthin und in den Passwort-Manager, nicht ins Git-Repo.
+2. Für diese Adresse wird keine E-Mail verschickt, der Code bleibt immer gleich. Alle anderen Anmeldungen laufen unverändert.
+3. Adresse und Code in der Play Console unter **App-Inhalte → Anmeldedaten** eintragen.
+
+Das Konto darf keine echten Daten enthalten. Löschen die Prüfer es, entsteht es bei der nächsten Anmeldung neu.
+
 ## Updates
 
 Geänderte Dateien einfach wieder per FTP hochladen. `api/config.php` nie überschreiben –

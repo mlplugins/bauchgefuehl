@@ -70,7 +70,7 @@ Alles aus [store-eintrag.md](store-eintrag.md):
 
 1. **Wachstum → Store-Präsenz → Haupt-Store-Eintrag:** Name, Kurz- und Langbeschreibung, App-Symbol, Feature-Grafik, Screenshots.
 2. **Store-Einstellungen:** Kategorie Gesundheit & Fitness, Kontaktdaten.
-3. **Richtlinien → App-Inhalte:** Datenschutzerklärung, App-Zugriff, Werbung, Altersfreigabe, Zielgruppe, Nachrichten-App, Gesundheits-Apps, Datensicherheit, Behörden-Apps, Finanzfunktionen.
+3. **Richtlinien → App-Inhalte:** Datenschutzerklärung, Anmeldedaten, Werbung, Altersfreigabe, Zielgruppe, Nachrichten-App, Gesundheits-Apps, Datensicherheit, Behörden-Apps, Finanzfunktionen.
 
 Auf dem **Dashboard** zeigt Google eine Checkliste. Alles muss grün sein, bevor Produktion möglich ist.
 

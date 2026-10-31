@@ -27,6 +27,12 @@ return [
     // OAuth-Client-ID aus der Google Cloud Console (leer = Google-Anmeldung aus)
     'google_client_id' => '',
 
+    // Festes Konto für die Google-Prüfung: keine E-Mail, immer dieser 6-stellige Code (leer = aus)
+    'review_login' => [
+        'email' => '',
+        'code'  => '',
+    ],
+
     // E-Mail-Versand für die Anmeldecodes
     'mail' => [
         'mode'         => 'smtp',       // 'smtp' = über ein Postfach senden (empfohlen)
